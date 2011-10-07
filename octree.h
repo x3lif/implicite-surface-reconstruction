@@ -52,7 +52,7 @@ friend class CList_BLob;
 class CList_Octree_Node
 {
 protected:
-	CListed_Octree_Node *First,*Last;
+        CListed_Octree_Node *First,*Last;
 	int NBN;
 public:
 	CList_Octree_Node(void);

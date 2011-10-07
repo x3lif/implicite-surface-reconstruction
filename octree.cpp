@@ -1,6 +1,7 @@
 #include "octree.h"
 #include "cloud.h"
 #include "utils.h"
+
 // -------------------
 // Classe COctree_Node
 // -------------------
@@ -444,11 +445,11 @@ void CList_Octree_Node::Draw(unsigned char S)
 	CListed_Octree_Node *Current;
 
 	float frose[4]={0.807,0.462,0.670,0.0};
-	float frouge[4]={1.0,0.0,0.0,0.0};
+        //float frouge[4]={1.0,0.0,0.0,0.0};
 	float fvert[4]={0.0,1.0,0.0,1.0};
 	float fbleu[4]={0.14,0.21,0.6,0.0};
 	float fjaune[4]={1.0,1.0,0.0,0.0};
-	float fjaunevert[4]={0.7,1.0,0.0,0.0};
+        //float fjaunevert[4]={0.7,1.0,0.0,0.0};
 
 	switch (S)
 	{

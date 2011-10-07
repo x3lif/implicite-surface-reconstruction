@@ -1,7 +1,7 @@
 #include "voxel.h"
-#include "utils.h"
 #include "cloud.h"
 #include "renderer.h"
+#include "utils.h"
 #include <QDebug>
 
 // --------------
@@ -19,7 +19,6 @@ QVector3D CVoxel_8::Get_Vertex(int i) const
 void CVoxel_8::Put_Vertex(int i,QVector3D p)
 {
 	Vertex[i]=p;
-	//arrayList();
 	// erase vertexArray in order to generate it at the next draw
 	mVertexArrayList.clear();
 }
@@ -28,22 +27,16 @@ void CVoxel_8::Put_Vertex(int i,double x,double y, double z)
 {
 	QVector3D lNewVertex(x,y,z);
 	Vertex[i] = lNewVertex;
-	//Vertex[i].Put_x(x);Vertex[i].Put_y(y);Vertex[i].Put_z(z);
-	//arrayList();
+
 	// erase vertexArray in order to generate it at the next draw
 	mVertexArrayList.clear();
 }
 
 void CVoxel_8::Voxel_Info(void)
 {
-	int i;
-
-	for(i=0;i<8;i++)
+        for(int i=0;i<8;++i)
 	{
-		//qWarning()<<"Sommet "<<i<<":";
-		//Vertex[i].Point_Info();
 		qWarning()<<"Point "<<i<<": "<<Vertex[i].x()<<" "<<Vertex[i].y()<<" "<<Vertex[i].z();
-		//printf("\n");
 	}
 }
 
@@ -63,53 +56,58 @@ void CVoxel_8::Set_Voxel(	QVector3D V0,QVector3D V1,QVector3D V2,QVector3D V3,
 	mVertexArrayList.clear();
 }
 
-CVoxel_8 &CVoxel_8::operator = (const CVoxel_8 &V)
+CVoxel_8& CVoxel_8::operator = (const CVoxel_8 &V)
 {	
-	int i;
-
-	for(i=0;i<8;i++)
-		Vertex[i]=V.Get_Vertex(i);
-	return *this;
+    for(int i=0;i<8;++i) {
+        Vertex[i]=V.Get_Vertex(i);
+    }
+    return *this;
 }
 
 void CVoxel_8::arrayList() {
-	mVertexArrayList.clear();
-	mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
-	mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
-	mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
-	mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
+    // ensure the arrayList is empty
+    mVertexArrayList.clear();
 
-	mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
-	mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
-	mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
-	mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
+    // Adding points to draw
+    mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
+    mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
+    mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
+    mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
 
-	mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
-	mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
-	mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
-	mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
+    mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
+    mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
+    mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
+    mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
 
-	mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
-	mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
-	mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
-	mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
+    mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
+    mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
+    mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
+    mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
 
-	mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
-	mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
-	mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
-	mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
+    mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
+    mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
+    mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
+    mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
 
-	mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
-	mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
-	mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
-	mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
+    mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
+    mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
+    mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
+    mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
+
+    mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
+    mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
+    mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
+    mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
 }
 
 void CVoxel_8::Draw(void)
 {
+    // if the points list is empty -> generate it
 	if(mVertexArrayList.size() == 0)	arrayList();
 
-	// TODO : Use Array Lists
+        glCullFace(GL_BACK);
+        glEnable(GL_CULL_FACE);
+
 	glColor3f(0.0,0.0,1.0);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, mVertexArrayList.data());
@@ -120,18 +118,21 @@ void CVoxel_8::Draw(void)
 		glDrawArrays(GL_QUADS, 16, 4);
 		glDrawArrays(GL_QUADS, 20, 4);
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+        glDisable(GL_CULL_FACE);
 }
 
 void CVoxel_8::Draw_Lines(void)
 {
+    // if the points list is empty -> generate it
 	if(mVertexArrayList.size() == 0)	arrayList();
 
 	glColor3f(0.0,0.0,1.0);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, mVertexArrayList.data());
-		glDrawArrays(GL_LINE_LOOP, 0, 4);
+                glDrawArrays(GL_LINE_LOOP, 0, 4);
 		glDrawArrays(GL_LINE_LOOP, 4, 4);
-		glDrawArrays(GL_LINE_LOOP, 8, 4);
+                glDrawArrays(GL_LINE_LOOP, 8, 4);
 		glDrawArrays(GL_LINE_LOOP, 12, 4);
 		glDrawArrays(GL_LINE_LOOP, 16, 4);
 		glDrawArrays(GL_LINE_LOOP, 20, 4);
@@ -150,21 +151,7 @@ CVoxel_Tab::CVoxel_Tab(int x_Dim,int y_Dim,int z_Dim)
 {
 //	int i,j;
 	Dimx=x_Dim;Dimy=y_Dim;Dimz=z_Dim;
-	/*Voxels=new CVoxel_8** [Dimx];
-	for (i=0;i<Dimx;i++)
-	{
-		Voxels[i]=new CVoxel_8* [Dimy];
-		for (j=0;j<Dimy;j++)
-			Voxels[i][j]=new CVoxel_8 [Dimz];
-	}
 
-	States=new unsigned char**[Dimx];
-	for (i=0;i<Dimx;i++)
-	{
-		States[i]=new unsigned char* [Dimy];
-		for (j=0;j<Dimy;j++)
-			States[i][j]=new unsigned char [Dimz];
-	}*/
 	// Construction du QVector de voxels
 	QVector<QVector<QVector< CVoxel_8> > > Voxels(Dimx);
 	for(int i=0;i<Dimx;i++){
@@ -173,7 +160,7 @@ CVoxel_Tab::CVoxel_Tab(int x_Dim,int y_Dim,int z_Dim)
 			Voxels[i][j].resize(Dimz);
 		}
 	}
-	qWarning()<<"vox s"<<Voxels.size()<<" "<<Voxels[Dimx-1].size()<<" "<<Voxels[Dimx-1][Dimy-1].size();
+        qWarning()<<"vox size:"<<Voxels.size()<<" "<<Voxels[Dimx-1].size()<<" "<<Voxels[Dimx-1][Dimy-1].size();
 	//Construction du tableau d'états
 	QVector<QVector<QVector< unsigned char> > > States(Dimx);
 	for(int i=0;i<Dimx;i++){
@@ -342,7 +329,7 @@ void CVoxel_Tab::Create_Square_Enum(Cloud* pCloud) {
 	}
 	else
 	{
-		printf("mode slow voxelisation\n");
+                qWarning()<<"mode slow voxelisation";
 		Distances_Tab = new float * [NBPTS-1];
 		for(i=0;i<NBPTS-1;i++) 
 		{	
@@ -398,10 +385,10 @@ void CVoxel_Tab::Create_Square_Enum(Cloud* pCloud) {
 		ty=BBox.Get_Vertex(4).y()-BBox.Get_Vertex(0).y();
 		tz=BBox.Get_Vertex(3).z()-BBox.Get_Vertex(0).z();
 		tmax=qMax(tx,qMax(ty,tz));
-		printf("Longueur maximale de la boite engloibante = %.5f\n",tmax);
+                qWarning()<<"Longueur maximale de la boite engloibante = "<<tmax;
 
 		Dim=(int)(tmax/Vlength);
-		qWarning()<<"Dimension de la voxellisation determinee par la taille des voxels : %d\n"<<Dim;
+                qWarning()<<"Dimension de la voxellisation determinee par la taille des voxels : "<<Dim;
 
 		for (i=0;i<13;i++)
 			if (Dim<Pow2[i])
@@ -409,7 +396,7 @@ void CVoxel_Tab::Create_Square_Enum(Cloud* pCloud) {
 				Dim=Pow2[i];	// on prend la puisance de 2 superieure
 				break;
 			}
-		qWarning()<<"Dimension de la voxellisation ajustee en puissance de 2 : %d\n"<<Dim;
+                qWarning()<<"Dimension de la voxellisation ajustee en puissance de 2 : "<<Dim;
 
 		Dimx=Dimy=Dimz=Dim;
 

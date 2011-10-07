@@ -14,13 +14,23 @@
 #include <QMouseEvent>
 #include "cloud.h"
 #include "octree.h"
+#include "blob.h"
 
-#define DRAW_CLOUDS 0x001
+#define DRAW_CLOUDS             0x001
 
-#define DRAW_OCTREE_DEEP	0x010
-#define DRAW_OCTREE_INNER	0x020
-#define DRAW_OCTREE_INOUT	0x040
-#define DRAW_OCTREE_OUT		0x080
+#define DRAW_OCTREE_DEEP	0x0010
+#define DRAW_OCTREE_INNER	0x0020
+#define DRAW_OCTREE_INOUT	0x0040
+#define DRAW_OCTREE_OUT		0x0080
+
+#define DRAW_BLOBS_EFF_DEEP     0x0100
+#define DRAW_BLOBS_EFF_IN       0x0200
+#define DRAW_BLOBS_EFF_INOUT    0x0400
+
+#define DRAW_BLOBS_THR_DEEP     0x1000
+#define DRAW_BLOBS_THR_IN       0x2000
+#define DRAW_BLOBS_THR_INOUT    0x4000
+#define DRAW_BLOBS_NONE         0x8800
 
 
 class Renderer :public QGLWidget {
@@ -33,6 +43,7 @@ public:
         void        setThingstoDraw(int pValue);
 	CVoxel_Tab* voxelTab();
         COctree*    octree();
+        CList_BLob* blobList();
 
 protected:
 	// inerhited methods.
@@ -60,6 +71,7 @@ private:
         Qt::MouseButtons mButtonPressed;
         QPointF mMousePos;
         COctree mOctree;
+        CList_BLob mListBlobs;
 
 };
 

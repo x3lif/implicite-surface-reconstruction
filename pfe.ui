@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainGUI</class>
+ <class>Main</class>
  <widget class="QWidget" name="Main">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>886</width>
-    <height>551</height>
+    <height>562</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -57,7 +57,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -122,7 +122,11 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QSpinBox" name="mVoxelNumberSpinbox"/>
+           <widget class="QSpinBox" name="mVoxelNumberSpinbox">
+            <property name="value">
+             <number>64</number>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0" colspan="2">
            <widget class="QPushButton" name="mRenderButton">
@@ -158,6 +162,9 @@
         <widget class="QCheckBox" name="mCloudPointCheckbox">
          <property name="text">
           <string>Nuage de points</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -204,6 +211,13 @@
           <string>Blobs de Reconstruction</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QCheckBox" name="mBlobsNone">
+            <property name="text">
+             <string>Aucun</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QGroupBox" name="groupBox_5">
             <property name="title">

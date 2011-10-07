@@ -6,6 +6,8 @@
 #include "ui_pfe.h"
 #include "renderer.h"
 
+class QButtonGroup;
+
 class PFE : public QWidget
 {
     Q_OBJECT
@@ -22,10 +24,13 @@ protected slots:
     void drawInOutOctree( int pValue );
     void drawInnerOctree( int pValue );
     void drawDeepOctree( int pValue );
+    void setDrawingRadius(int pValue);
+    void computeBlobsRendering();
 
 private:
-    Ui_MainGUI 	ui;
+    Ui_Main 	ui;
     Renderer* 	mRenderer;
+    QButtonGroup* mGroupInfluence;
 };
 
 #endif // PFE_H

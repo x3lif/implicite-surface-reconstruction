@@ -6,10 +6,19 @@
  */
 
 #include "renderer.h"
+#include <QTime>
+
+GLfloat gLight0[3][4] = { {0.1f, 0.1f, 0.3f, 1.0f},
+                             {0.5f, 0.5f, 1.0f, 1.0f},
+                             {3.0f, 3.0f, 0.0f, 0.0f} };
+
+GLfloat gLight1[3][4] = { {0.1f, 0.1f, 0.3f, 1.0f},
+                             {1.0f, 0.5f, 0.5f, 1.0f},
+                             {-4.0f, -4.0f, 4.0f, 0.0f} };
 
 Renderer::Renderer( QWidget* pParent) {
 	// TODO Auto-generated constructor stub
-	mThingsToDraw = 0;
+        mThingsToDraw = DRAW_CLOUDS;
 	QObject::connect( &mTimer, SIGNAL(timeout()), this, SLOT(updateGL()));
 
 	this->setParent( pParent );
@@ -45,26 +54,27 @@ void Renderer::openCloudFile(QString& pPath) {
 }
 
 void Renderer::paintGL() {
+
+        QTime lTime;
+        lTime.start();
+
 	 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	 glMatrixMode( GL_PROJECTION );
 	 glLoadIdentity();
-	 gluPerspective( 45, (float)this->width()/(float)this->height(), 0.0001, 99.0 );
+         gluPerspective( 45, (float)this->width()/(float)this->height(), 0.0001, 999.0 );
 
 	 glMatrixMode( GL_MODELVIEW );
 	 glLoadIdentity();
 	 gluLookAt(	mCam[0], mCam[1], mCam[2],
 				mCam[3], mCam[4], mCam[5],
-				mCam[6], mCam[7], mCam[9]);
+                                mCam[6], mCam[7], mCam[8]);
 
 	 glRotatef( mRot[0], 0.0f, 0.0f, 1.0f );
 	 glRotatef( mRot[1], 1.0f, 0.0f, 0.0f );
 	 glPointSize(2);
 
-	 // Draw the Cloud
-	 if(mCloud != NULL && (mThingsToDraw & DRAW_CLOUDS ) ) {
-		 mCloud->Draw();
-	 }
+         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	 // Draw voxels
 	 if( mThingsToDraw & DRAW_OCTREE_OUT) {
@@ -76,36 +86,68 @@ void Renderer::paintGL() {
 	 if( mThingsToDraw & DRAW_OCTREE_INNER ) {
 		 mVT.Draw_State( 2 );
 	 }
-	 if( mThingsToDraw & DRAW_OCTREE_DEEP ) {
+         if( mThingsToDraw & DRAW_OCTREE_DEEP ) {
 		 mVT.Draw_State( 3 );
 	 }
 
-	 //	 lVT.Draw_All();
-	 /*glColor3f(0.0f,0.0f,1.0f);*/
-	 //mVT.Get_BBox().Draw();
-	 //mVT.Draw_All_Lines();
-	 /*
-	 glBegin(GL_POINTS);
-		 glColor3f(.5,0.5,1);
-		 glVertex3f(-1,-1,1);
-		 glVertex3f(-1,1,1);
-		 glVertex3f(1,1,1);
-		 glVertex3f(1,-1,1);
-	 glEnd();
-	*/
+         if( mThingsToDraw & DRAW_BLOBS_EFF_DEEP ) {
+             mListBlobs.drawBlobsThreshold( 3 );
+         }
+         if( mThingsToDraw & DRAW_BLOBS_EFF_IN ) {
+             mListBlobs.drawBlobsThreshold( 2 );
+         }
+         if( mThingsToDraw & DRAW_BLOBS_EFF_INOUT ) {
+             mListBlobs.drawBlobsThreshold( 1 );
+         }
+
+         if( mThingsToDraw & DRAW_BLOBS_THR_DEEP ) {
+             mListBlobs.drawBlobsInfluence( 3 );
+         }
+         if( mThingsToDraw & DRAW_BLOBS_THR_IN ) {
+             mListBlobs.drawBlobsInfluence( 2 );
+         }
+         if( mThingsToDraw & DRAW_BLOBS_THR_INOUT ) {
+             mListBlobs.drawBlobsInfluence( 1 );
+         }
+
+         // Draw the Cloud
+         if(mCloud != NULL && (mThingsToDraw & DRAW_CLOUDS ) ) {
+                 mCloud->Draw();
+         }
 }
 
 
 void Renderer::initializeGL() {
-	glClearColor(0, 0, 0, 0);
-	this->resizeGL( this->parentWidget()->size() );
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_COLOR_MATERIAL);
+    glClearColor(0, 0, 0, 0);
+    resizeGL( parentWidget()->size() );
+    /*glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_DEPTH_TEST);
+    glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_POLYGON_SMOOTH);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);*/
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_NORMALIZE);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_COLOR_MATERIAL);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 1);
+
+    glShadeModel(GL_SMOOTH);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, gLight0[0] );
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, gLight0[1] );
+    glLightfv(GL_LIGHT0, GL_POSITION, gLight0[2] );
+
+    glEnable(GL_LIGHT1);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, gLight1[0] );
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, gLight1[1] );
+    glLightfv(GL_LIGHT1, GL_POSITION, gLight1[2] );
+
 }
 
 void Renderer::resizeGL( int width, int height ){
@@ -125,7 +167,7 @@ COctree* Renderer::octree() {
 }
 
 void Renderer::setThingstoDraw(int pValue){
-	mThingsToDraw ^= pValue;
+    mThingsToDraw ^= pValue;
 }
 
 CVoxel_Tab* Renderer::voxelTab() {
@@ -164,8 +206,9 @@ void Renderer::mouseReleaseEvent( QMouseEvent* pEvent ) {
 
 void Renderer::wheelEvent( QWheelEvent* pEvent ) {
 	pEvent->accept();
-	if(pEvent->orientation() == Qt::Vertical) {
-		qWarning()<<(int)pEvent->buttons();
-	}
-	mCam[2] -=1;
+        mCam[2] -=(pEvent->delta()/100);
+}
+
+CList_BLob* Renderer::blobList() {
+    return &mListBlobs;
 }

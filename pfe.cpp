@@ -1,7 +1,9 @@
 #include "pfe.h"
 #include "voxel.h"
+#include "blob.h"
 #include <QFileDialog>
 #include <QTime>
+#include <QButtonGroup>
 
 PFE::PFE(QWidget *parent)
     : QWidget(parent)
@@ -9,13 +11,34 @@ PFE::PFE(QWidget *parent)
 	ui.setupUi(this);
 	mRenderer = new Renderer( ui.mGLContainer );
 
+        mGroupInfluence = new QButtonGroup;
+        mGroupInfluence->setParent(this);
+        mGroupInfluence->setExclusive(true);
+        mGroupInfluence->addButton(ui.mBlobsNone);
+        mGroupInfluence->addButton(ui.mContourERadiusCheckbox);
+        mGroupInfluence->addButton(ui.mDeepInnerERadiuscheckbox);
+        mGroupInfluence->addButton(ui.mNearInnerERadiusCheckbox);
+        mGroupInfluence->addButton(ui.mContourIRadiusCheckbox);
+        mGroupInfluence->addButton(ui.mDeepInnerIRadiusCheckbox);
+        mGroupInfluence->addButton(ui.mNearInnerIRadiusCheckbox);
+
+        mGroupInfluence->setId(ui.mContourERadiusCheckbox, 1);
+        mGroupInfluence->setId(ui.mNearInnerERadiusCheckbox, 2);
+        mGroupInfluence->setId(ui.mDeepInnerERadiuscheckbox , 3);
+        mGroupInfluence->setId(ui.mContourIRadiusCheckbox, 4);
+        mGroupInfluence->setId(ui.mNearInnerIRadiusCheckbox, 5);
+        mGroupInfluence->setId(ui.mDeepInnerIRadiusCheckbox , 6);
+
 	connect( ui.mOpenFileButton, SIGNAL(clicked()), this, SLOT(openFileDialog()) );
 	connect( ui.mReconctructionButton, SIGNAL(clicked()), this, SLOT(reconstruction()));
-	connect( ui.mCloudPointCheckbox, SIGNAL(stateChanged(int)), this, SLOT(drawCloud(int)) );
+        connect( ui.mCloudPointCheckbox, SIGNAL(stateChanged(int)), this, SLOT(drawCloud(int)) );
 	connect( ui.mOuterOctreeCheckbox, SIGNAL(stateChanged(int)), this, SLOT(drawOuterOctree(int)));
 	connect( ui.mcontourOctreeCheckbox, SIGNAL(stateChanged(int)), this, SLOT(drawInOutOctree(int)));
 	connect( ui.mNearInnerOctreeCheckbox, SIGNAL(stateChanged(int)), this, SLOT(drawInnerOctree(int)));
 	connect( ui.mDeepInnerOctreeCheckbox, SIGNAL(stateChanged(int)), this, SLOT(drawDeepOctree(int)));
+        connect( mGroupInfluence, SIGNAL(buttonClicked(int)), this, SLOT(setDrawingRadius(int)));
+        connect( ui.mRenderButton, SIGNAL(clicked()), this, SLOT(computeBlobsRendering() ) );
+
 }
 
 PFE::~PFE()
@@ -24,15 +47,16 @@ PFE::~PFE()
 }
 
 void PFE::openFileDialog() {
-	static QString sPath = "./samples";
+        static QString sPath = "../implicite-surface-reconstruction/samples";
 	QString lFile = QFileDialog::getOpenFileName(this, "select a file", sPath);
 	mRenderer->openCloudFile(lFile);
 }
 
 void PFE::reconstruction() {
-    CVoxel_Tab* lVT = mRenderer->voxelTab();
-    if(lVT == NULL)	return;
+    if( mRenderer->cloud() == NULL)  return;
+    if( mRenderer->cloud()->getNbPoints() == 0) return;
 
+    CVoxel_Tab* lVT = mRenderer->voxelTab();
     QTime lStart; lStart.start();
 
     qWarning()<<"Voxelisation du nuage";
@@ -40,37 +64,116 @@ void PFE::reconstruction() {
 
     //trouve les voxels de surface
     lVT->Find_Boundary_Voxels( mRenderer->cloud() );
-    //permet de différencier les voxels intérieur des voxels extérieurs
+    //permet de diffrencier les voxels intérieur des voxels extrieurs
     lVT->Find_InOut_Voxels();
     //permet de trouver les voxels "profonds"
     lVT->Find_Deep_Voxels();
-    qWarning()<<"La voxelisation "<< lStart.elapsed()<<"ms";
+    qWarning()<<"La voxelisation  pris"<< lStart.elapsed()<<"ms";
 
     lStart.restart();
+
     qWarning()<<"groupement des voxels en octrees";
     COctree* lOctree = mRenderer->octree();
     lOctree->Create_From_Voxellization( *lVT );
     lOctree->Find_List_Leaves( mRenderer->mListNodes );
-    qWarning()<<"le groupement à pris "<<lStart.elapsed()<<" ms";
+    qWarning()<<"le groupement   pris "<<lStart.elapsed()<<" ms";
+
+    lStart.restart();
+    qWarning()<<"Calcul des blobs ";
+    mRenderer->blobList()->Set_Threshold(ui.mTresholdSpinBox->value());
+    qWarning()<<'\t'<<"lecture de la voxelisation";
+    mRenderer->blobList()->readVoxellization(mRenderer->cloud()->getPoints(), lVT, ui.mTresholdSpinBox->value());
+    qWarning()<<'\t'<<"ajout des blobs de surface";
+    mRenderer->blobList()->addBoundaryBlobsFromVoxels(mRenderer->cloud()->getPoints(), lVT );
+    qWarning()<<"durée d'ajout des blobs : "<<lStart.elapsed()<<"ms "<<"\n -- nombre de blobs dans la liste : "<<mRenderer->blobList()->size();
+}
+
+void PFE::computeBlobsRendering() {
+    // if no blobs to draw
+    /*if( mRenderer->blobList()->size() == 0) return;
+
+    // si le rendu à deja été calculé : effacement de la liste de triangle
+    if( !mRenderer->triangleList().isEmpty() ) mRenderer->triangleList().clear();
+
+    qWarning()<<"calcul du Rendu des blobs : ";
+
+    // Creation de la marching Grid
+    lMarchingGrid.setDim( ui.mVoxelNumberSpinbox );
+    qWarning()<<"Marching grid de dimension : "<<MG.dimension();
+    lMarchingGrid.Allocate();
+    lMarchingGrid.initBoxes( mRenderer->blobList()->Get_Bounded_Box() );
+    lMarchingGrid.initGrid();
+
+    // calculs des valeurs de la grille
+    lMarchingGrid.computeVal(LB);
+
+    // calcul des triangles
+    lMarchingGrid.computeTriangles(LB, LT);
+    */
+
 }
 
 void PFE::drawCloud( int pValue ){
-    pValue = 0;
-	mRenderer->setThingstoDraw( DRAW_CLOUDS );
+    Q_UNUSED(pValue);
+    mRenderer->setThingstoDraw( DRAW_CLOUDS );
 }
 
 void PFE::drawOuterOctree( int pValue ) {
-	mRenderer->setThingstoDraw( DRAW_OCTREE_OUT );
+    Q_UNUSED(pValue);
+    mRenderer->setThingstoDraw( DRAW_OCTREE_OUT );
 }
 
 void PFE::drawInOutOctree( int pValue ) {
+    Q_UNUSED(pValue);
 	mRenderer->setThingstoDraw( DRAW_OCTREE_INOUT );
 }
 
 void PFE::drawInnerOctree( int pValue ) {
+    Q_UNUSED(pValue);
 	mRenderer->setThingstoDraw( DRAW_OCTREE_INNER );
 }
 
 void PFE::drawDeepOctree( int pValue ) {
+    Q_UNUSED(pValue);
 	mRenderer->setThingstoDraw( DRAW_OCTREE_DEEP );
+}
+
+void PFE::setDrawingRadius(int pValue) {
+    static int sPreviousValue = 0;
+
+    // clearing old value to render
+    mRenderer->setThingstoDraw(sPreviousValue);
+    switch(pValue) {
+        case 1: {
+            sPreviousValue = DRAW_BLOBS_EFF_INOUT;
+            break;
+        }
+        case 2:{
+            sPreviousValue = DRAW_BLOBS_EFF_IN;
+            break;
+        }
+        case 3:{
+            sPreviousValue = DRAW_BLOBS_EFF_DEEP;
+            break;
+        }
+
+        case 4: {
+            sPreviousValue = DRAW_BLOBS_THR_INOUT;
+            break;
+        }
+        case 5:{
+            sPreviousValue = DRAW_BLOBS_THR_IN;
+            break;
+        }
+        case 6:{
+            sPreviousValue = DRAW_BLOBS_THR_DEEP;
+            break;
+        }
+        default: {
+            sPreviousValue = DRAW_BLOBS_NONE;
+            break;
+        }
+    }
+    // send new value to render
+    mRenderer->setThingstoDraw(sPreviousValue);
 }

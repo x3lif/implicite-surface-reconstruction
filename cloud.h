@@ -23,7 +23,7 @@ public:
 	virtual ~Cloud();
 	void Draw();
 	int getNbPoints();
-	QVector<QVector3D> getPoints();
+        QVector<QVector3D> getPoints();
 	CVoxel_8 boundingBox();
 
 public :

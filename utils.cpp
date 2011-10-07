@@ -1,6 +1,9 @@
 #include <math.h>
+#include <GL/freeglut.h>
 #include <QVector3D>
 #include <QDebug>
+#include "blob.h"
+
 double Distance3D (const QVector3D& a, const QVector3D& b)
 {
 	double x,y,z;
@@ -36,30 +39,30 @@ double Manhattan_Distance3D (const QVector3D& a, const QVector3D& b)
 	z=fabs(a.z()-b.z());
 	return (x+y+z);
 }
-/*
-CPoint_3D Middle(CPoint_3D a, CPoint_3D b)
+
+QVector3D Middle(QVector3D a, QVector3D b)
 {
-	CPoint_3D m;
-	m.Put_x((a.Get_x()+b.Get_x())/2);
-	m.Put_y((a.Get_y()+b.Get_y())/2);
-	m.Put_z((a.Get_z()+b.Get_z())/2);
+        QVector3D m;
+        m.setX((a.x()+b.x())/2);
+        m.setY((a.y()+b.y())/2);
+        m.setZ((a.z()+b.z())/2);
 	return m;
 }
 
-CPoint_3D Normal3D(CPoint_3D a, CPoint_3D b)
+QVector3D Normal3D(QVector3D a, QVector3D b)
 {
-	CPoint_3D n;
-	n.Put_x(a.Get_y()*b.Get_z()-b.Get_y()*a.Get_z());
-	n.Put_y(a.Get_z()*b.Get_x()-b.Get_z()*a.Get_x());
-	n.Put_z(a.Get_x()*b.Get_y()-b.Get_x()*a.Get_y());
+        QVector3D n;
+        n.setX(a.y()*b.z()-b.y()*a.z());
+        n.setY(a.z()*b.x()-b.z()*a.x());
+        n.setZ(a.x()*b.y()-b.x()*a.y());
 	return n;
 }
 
-double Dot_Product_3D(CPoint_3D a, CPoint_3D b)
+double Dot_Product_3D(QVector3D a, QVector3D b)
 {
-	return (a.Get_x()*b.Get_x()+a.Get_y()*b.Get_y()+a.Get_z()*b.Get_z());
+        return (a.x()*b.x()+a.y()*b.y()+a.z()*b.z());
 }
-*/
+
 int Find_Square_Power (int n)
 {
 	int p=0;
@@ -79,10 +82,10 @@ int Find_Square_Power (int n)
 		return p;
 	else return 0;
 }
-/*
-void Find_New_Center(CPoint_3D &c,CPoint_3D M,CPoint_3D N)
+
+void Find_New_Center(QVector3D &c,QVector3D& M,QVector3D& N)
 {
-	CPoint_3D C;
+        QVector3D C;
 	double t;
 	for (t=0;t<=1;t=t+0.001)
 	{
@@ -134,56 +137,114 @@ double dMuraki(double r, double R)
 double dWywill(double r, double R)
 {
 	// A FAIRE
-	
+        r = 0;
+        R = 0;
 	return(0);
 }
 
-double dEuclidianx(CPoint_3D p,CPoint_3D c)
+double dEuclidianx(QVector3D p,QVector3D c)
 {
-	return((c.Get_x()-p.Get_x())/Distance3D(p,c));
+        return((c.x()-p.x())/Distance3D(p,c));
 }
 
-double dEuclidiany(CPoint_3D p,CPoint_3D c)
+double dEuclidiany(QVector3D p,QVector3D c)
 {
-	return((c.Get_y()-p.Get_y())/Distance3D(p,c));
+        return((c.y()-p.y())/Distance3D(p,c));
 }
 
-double dEuclidianz(CPoint_3D p,CPoint_3D c)
+double dEuclidianz(QVector3D p,QVector3D c)
 {
-	return((c.Get_z()-p.Get_z())/Distance3D(p,c));
+        return((c.z()-p.z())/Distance3D(p,c));
 }
+
 double AngleXY(CBlob* blob){
-	CPoint_3D p1=blob->Get_Segment_A(),p2=blob->Get_Segment_B();double angle=0.;
-	p1.Put_z(0.);p2.Put_z(0.);
+        QVector3D p1=blob->getSegmentA(),p2=blob->getSegmentB();double angle=0.;
+        p1.setZ(0.);p2.setZ(0.);
 	double l = Distance3D(p1,p2);
 	if(l>0.){
-	angle=acos((p1.Get_x()-p2.Get_x())/l);
-	if( p2.Get_y()-p1.Get_y() <0 )
+        angle=acos((p1.x()-p2.x())/l);
+        if( p2.y()-p1.y() <0 )
 		angle=-angle;
 	}
 	return (angle);
 }
 double AngleXZ(CBlob* blob){
-	CPoint_3D p1=blob->Get_Segment_A(),p2=blob->Get_Segment_B();double angle=0.;
-	p1.Put_y(0.);p2.Put_y(0.);
+        QVector3D p1=blob->getSegmentA(),p2=blob->getSegmentB();double angle=0.;
+        p1.setY(0.);p2.setY(0.);
 	double l = Distance3D(p1,p2);
 	if(l>0.){
-		angle=acos((p1.Get_x()-p2.Get_x())/l);
-		if(p2.Get_z()-p1.Get_z()<0)
+                angle=acos((p1.x()-p2.x())/l);
+                if(p2.z()-p1.z()<0)
 			angle=-angle;
 	}
 	return angle;
 }
 double AngleYZ(CBlob* blob){
-	CPoint_3D p1=blob->Get_Segment_A(),p2=blob->Get_Segment_B();double angle=0.;
-	p1.Put_x(0.);p2.Put_x(0.);
+        QVector3D p1=blob->getSegmentA(),p2=blob->getSegmentB();double angle=0.;
+        p1.setX(0.);p2.setX(0.);
 	double l = Distance3D(p1,p2);
 	if(l>0.){
-	angle=acos((p1.Get_y()-p2.Get_y())/l);
+            angle=acos((p1.y()-p2.y())/l);
 	}
 	return angle;
 }
 double absolut(double nombre){
 	return (nombre>0.)?nombre:-nombre;
 }
-*/
+
+void Draw_Sphere (float r,int parallele,int meridien)
+{
+int i,j;
+double theta,phi;
+
+        /* Initialisation de l'angle */
+        theta=((M_PI/2)-(M_PI/parallele));
+        // Dessin des bandes parallèles
+        glBegin(GL_QUAD_STRIP);
+                for (i=1;i<=parallele-2;i++)
+                {
+                        phi=0;
+                        for (j=0;j<=meridien;j++)
+                        {
+                                glNormal3f(sin(phi)*cos(theta),sin(theta),cos(phi)*cos(theta));
+                                glVertex4f(r*sin(phi)*cos(theta),r*sin(theta),r*cos(phi)*cos(theta),1.0);
+                                theta=theta-(M_PI/parallele);
+                                glNormal3f(sin(phi)*cos(theta),sin(theta),cos(phi)*cos(theta));
+                                glVertex4f(r*sin(phi)*cos(theta),r*sin(theta),r*cos(phi)*cos(theta),1.0);
+                                theta=theta+(M_PI/parallele);
+                                phi=phi+(2*M_PI/meridien);
+                        }
+                        theta=theta-(M_PI/parallele);
+                };
+        glEnd();
+
+        // Dessin de la calotte inférieur
+        theta=((-M_PI)/2)-(M_PI/parallele);
+        phi=0;
+        if ( (meridien % 2) == 1) phi=M_PI/meridien;
+                glBegin(GL_TRIANGLE_FAN);
+                        glNormal3f(0.0,-1.0,0.0);
+                        glVertex3f(0.0,-r,0.0);
+                        for (i=0; i<=meridien; i++)
+                        {
+                                glNormal3f(sin(phi)*cos(theta),sin(theta),cos(phi)*cos(theta));
+                                glVertex4f(r*sin(phi)*cos(theta),r*sin(theta),r*cos(phi)*cos(theta),1.0);
+                                phi=phi-(2*M_PI/meridien);
+                        };
+                glEnd();
+
+        // Dessin de la calotte supérieur
+        theta=((M_PI)/2)-(M_PI/parallele);
+        phi=0;
+        glBegin(GL_TRIANGLE_FAN);
+                glNormal3f(0.0,1.0,0.0);
+                glVertex3f(0.0,r,0.0);
+                for (i=0; i<=meridien; i++)
+                {
+                        glNormal3f(sin(phi)*cos(theta),sin(theta),cos(phi)*cos(theta));
+                        glVertex4f(r*sin(phi)*cos(theta),r*sin(theta),r*cos(phi)*cos(theta),1.0);
+                        phi=phi+(2*M_PI/meridien);
+                }
+        glEnd();
+
+}

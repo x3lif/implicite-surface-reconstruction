@@ -8,15 +8,26 @@ HEADERS += utils.h \
     cloud.h \
     renderer.h \
     pfe.h \
-    octree.h
+    octree.h \
+    blob.h
 SOURCES += utils.cpp \
     voxel.cpp \
     cloud.cpp \
     renderer.cpp \
     main.cpp \
     pfe.cpp \
-    octree.cpp
+    octree.cpp \
+    blob.cpp
 FORMS += pfe.ui
 RESOURCES += 
 LIBS += -lGLU \
-    -lGLEW
+    -lGLEW \
+    -lglut
+
+
+
+
+
+
+
+
