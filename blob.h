@@ -54,9 +54,9 @@ public:
         virtual double      getInfParam(void) const =0;
         virtual int         getTypeReconstruction(void) const =0;
         virtual const QColor&     getColor(void) const =0;
-        virtual double      computeDistance(QVector3D) const =0;
+        virtual double      computeDistance(const QVector3D&) const =0;
         virtual void        computeBounds(double&, double&, double&, double&, double&, double &) const =0;
-        virtual double      computeVal(QVector3D) const =0;
+        virtual double      computeVal(const QVector3D& pPoint) const =0;
         virtual double      computeVal(double) const =0;
         virtual void        drawInfluence() const = 0;
         virtual void        drawThreshold() const = 0;
@@ -109,9 +109,9 @@ public:
         void setColor(/*float [4]*/ const QColor& pNewColor);
         CBlob_Spherical& operator = (const CBlob_Spherical & b);
         void Blob_Info(void) const;
-        double computeDistance(QVector3D) const;
+        double computeDistance(const QVector3D&) const;
         void computeBounds(double &,double &,double &,double &,double &,double &) const;
-        double computeVal(QVector3D) const;
+        double computeVal( const QVector3D& pPoint) const;
         double computeVal(double) const;
         void drawInfluence() const;
         void drawThreshold() const;
@@ -241,7 +241,7 @@ public:
     */
 protected:
         /** Qt Version */
-        QList<CBlob*> mBlobList;
+        QVector<CBlob*> mBlobList;
         double mThreshold;
         long double mXMin,mYMin,mZMin,mXMax,mYMax,mZMax;
         CVoxel_8 mBoundedBox;
@@ -275,7 +275,8 @@ public:
         void addBoundaryBlobsFromVoxels(QVector<QVector3D> pCloudPoint, CVoxel_Tab* pVoxelTab);
         //void Read_File(char *);
         //void Save_To_Povray(char *);
-        /*double Compute_Val(QVector3D);
+        double Compute_Val(const QVector3D& pPoint) const;
+        /*
         CPoint_3D Compute_Gradient(QVector3D);
         void Compute_Color(QVector3D p,float c[4]); // TODO replace c[4] by QColor?
 

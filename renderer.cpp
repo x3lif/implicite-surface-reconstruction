@@ -35,6 +35,8 @@ Renderer::Renderer( QWidget* pParent) {
 	mTimer.start( 24 );
 
         this->setMouseTracking(true);
+
+
 }
 
 Renderer::~Renderer() {
@@ -110,24 +112,26 @@ void Renderer::paintGL() {
              mListBlobs.drawBlobsInfluence( 1 );
          }
 
+         if( !mTriangleList.isEmpty() && (mThingsToDraw&DRAW_FUSION) ) {
+             QListIterator<CTriangle> lIte(mTriangleList);
+             while( lIte.hasNext() ) {
+                 CTriangle lTemp = lIte.next();
+                 lTemp.Draw();
+             }
+         }
+
          // Draw the Cloud
          if(mCloud != NULL && (mThingsToDraw & DRAW_CLOUDS ) ) {
                  mCloud->Draw();
          }
+         //qWarning()<<lTime.elapsed();
+         //qWarning()<<QString((const char*)glGetString(GL_VERSION));
 }
 
 
 void Renderer::initializeGL() {
     glClearColor(0, 0, 0, 0);
     resizeGL( parentWidget()->size() );
-    /*glDisable(GL_TEXTURE_2D);
-    //glDisable(GL_DEPTH_TEST);
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_POLYGON_SMOOTH);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);*/
 
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
@@ -211,4 +215,12 @@ void Renderer::wheelEvent( QWheelEvent* pEvent ) {
 
 CList_BLob* Renderer::blobList() {
     return &mListBlobs;
+}
+
+QList<CTriangle>& Renderer::triangleList() {
+    return mTriangleList;
+}
+
+void Renderer::setTriangleList(const QList<CTriangle>& pList) {
+    mTriangleList = pList;
 }

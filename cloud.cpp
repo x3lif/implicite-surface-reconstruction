@@ -35,8 +35,9 @@ Cloud::Cloud( QString& pFile ){
 
 	QStringListIterator lTokIterator(lTokens);
 	while(lTokIterator.hasNext()) {
-		mPointList << QString(lTokIterator.next()).toFloat();
+                mPointList << lTokIterator.next().toFloat();
 	}
+        qWarning()<<mPointList.size()<<mNbPoints;
 }
 
 Cloud::Cloud(QVector<QVector3D>& pCloud) {

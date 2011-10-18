@@ -6,41 +6,24 @@
 
 double Distance3D (const QVector3D& a, const QVector3D& b)
 {
-	double x,y,z;
-	x=a.x()-b.x();x=x*x;
-	y=a.y()-b.y();y=y*y;
-	z=a.z()-b.z();z=z*z;
-
-	/*QVector3D lTemp = a - b;
-	lTemp = lTemp * lTemp;
-
-	if( lTemp.length() == sqrt(x+y+z) ) {
-		qWarning()<<"Distance3D Eureka";
-	} else {
-		qWarning()<< lTemp.length() << sqrt(x+y+z);
-	}*/
-	return (sqrt(x+y+z));
+        return (a-b).length();
 }
 
 double Distance3D_Square (const QVector3D& a, const QVector3D& b)
 {
-	double x,y,z;
-	x=a.x()-b.x();x=x*x;
-	y=a.y()-b.y();y=y*y;
-	z=a.z()-b.z();z=z*z;
-	return (x+y+z);
+    return (a-b).lengthSquared();
 }
 
 double Manhattan_Distance3D (const QVector3D& a, const QVector3D& b)
 {
 	double x,y,z;
-	x=fabs(a.x()-b.x());
-	y=fabs(a.y()-b.y());
-	z=fabs(a.z()-b.z());
+        x=qAbs(a.x()-b.x());
+        y=qAbs(a.y()-b.y());
+        z=qAbs(a.z()-b.z());
 	return (x+y+z);
 }
 
-QVector3D Middle(QVector3D a, QVector3D b)
+/*QVector3D Middle(QVector3D a, QVector3D b)
 {
         QVector3D m;
         m.setX((a.x()+b.x())/2);
@@ -61,7 +44,7 @@ QVector3D Normal3D(QVector3D a, QVector3D b)
 double Dot_Product_3D(QVector3D a, QVector3D b)
 {
         return (a.x()*b.x()+a.y()*b.y()+a.z()*b.z());
-}
+}*/
 
 int Find_Square_Power (int n)
 {
@@ -103,7 +86,7 @@ double Muraki(double r, double R)
 
 	if (r<=R)
 	{
-		val=r/R;val=val*val;
+                val=r/R;val=val*val;
 		val=1-val;
 		val=val*val;
 		return(val);
