@@ -15,8 +15,10 @@
 #include "cloud.h"
 #include "octree.h"
 #include "blob.h"
+#include "triangle.h"
 
-#define DRAW_CLOUDS             0x001
+#define DRAW_CLOUDS             0x0001
+#define DRAW_FUSION             0x0002
 
 #define DRAW_OCTREE_DEEP	0x0010
 #define DRAW_OCTREE_INNER	0x0020
@@ -44,6 +46,8 @@ public:
 	CVoxel_Tab* voxelTab();
         COctree*    octree();
         CList_BLob* blobList();
+        QList<CTriangle>& triangleList();
+        void setTriangleList(const QList<CTriangle>& pList);
 
 protected:
 	// inerhited methods.
@@ -72,7 +76,7 @@ private:
         QPointF mMousePos;
         COctree mOctree;
         CList_BLob mListBlobs;
-
+        QList<CTriangle> mTriangleList;
 };
 
 #endif /* RENDERER_H_ */

@@ -1,6 +1,7 @@
 #include "pfe.h"
 #include "voxel.h"
 #include "blob.h"
+#include "mc.h"
 #include <QFileDialog>
 #include <QTime>
 #include <QButtonGroup>
@@ -21,6 +22,7 @@ PFE::PFE(QWidget *parent)
         mGroupInfluence->addButton(ui.mContourIRadiusCheckbox);
         mGroupInfluence->addButton(ui.mDeepInnerIRadiusCheckbox);
         mGroupInfluence->addButton(ui.mNearInnerIRadiusCheckbox);
+        mGroupInfluence->addButton(ui.mBlobFusionCheckbox);
 
         mGroupInfluence->setId(ui.mContourERadiusCheckbox, 1);
         mGroupInfluence->setId(ui.mNearInnerERadiusCheckbox, 2);
@@ -28,6 +30,7 @@ PFE::PFE(QWidget *parent)
         mGroupInfluence->setId(ui.mContourIRadiusCheckbox, 4);
         mGroupInfluence->setId(ui.mNearInnerIRadiusCheckbox, 5);
         mGroupInfluence->setId(ui.mDeepInnerIRadiusCheckbox , 6);
+        mGroupInfluence->setId(ui.mBlobFusionCheckbox, 7);
 
 	connect( ui.mOpenFileButton, SIGNAL(clicked()), this, SLOT(openFileDialog()) );
 	connect( ui.mReconctructionButton, SIGNAL(clicked()), this, SLOT(reconstruction()));
@@ -55,6 +58,11 @@ void PFE::openFileDialog() {
 void PFE::reconstruction() {
     if( mRenderer->cloud() == NULL)  return;
     if( mRenderer->cloud()->getNbPoints() == 0) return;
+
+    if( mRenderer->blobList()->size() != 0 )   {
+        qWarning()<<"rend deja fait TODO : vider la liste";
+        return;
+    }
 
     CVoxel_Tab* lVT = mRenderer->voxelTab();
     QTime lStart; lStart.start();
@@ -90,27 +98,42 @@ void PFE::reconstruction() {
 
 void PFE::computeBlobsRendering() {
     // if no blobs to draw
-    /*if( mRenderer->blobList()->size() == 0) return;
+    if( mRenderer->blobList()->size() == 0) return;
 
     // si le rendu à deja été calculé : effacement de la liste de triangle
     if( !mRenderer->triangleList().isEmpty() ) mRenderer->triangleList().clear();
 
+    QTime lTime;
+    lTime.start();
+
+    QList<CTriangle> lListTriangles;
+
     qWarning()<<"calcul du Rendu des blobs : ";
 
     // Creation de la marching Grid
-    lMarchingGrid.setDim( ui.mVoxelNumberSpinbox );
-    qWarning()<<"Marching grid de dimension : "<<MG.dimension();
-    lMarchingGrid.Allocate();
-    lMarchingGrid.initBoxes( mRenderer->blobList()->Get_Bounded_Box() );
-    lMarchingGrid.initGrid();
+    CMarching_Grid lMarchingGrid;
+    lMarchingGrid.setDimension( ui.mVoxelNumberSpinbox->value() );
+    qWarning()<<"Marching grid de dimension : "<<lMarchingGrid.dimension();
 
+    lMarchingGrid.Allocate();
+    lMarchingGrid.Init_Boxes( mRenderer->blobList()->Get_Bounded_Box() );
+    lMarchingGrid.boundingBox().Voxel_Info();
+    lMarchingGrid.Init_Grid();
+
+    qWarning()<<"1/ "<<lTime.elapsed()<<" ms";
+    lTime.restart();
     // calculs des valeurs de la grille
-    lMarchingGrid.computeVal(LB);
+
+    lMarchingGrid.Compute_Val( *mRenderer->blobList() );
+
+    qWarning()<<"2/ "<<lTime.elapsed()<<" ms";
+    lTime.restart();
 
     // calcul des triangles
-    lMarchingGrid.computeTriangles(LB, LT);
-    */
+    lMarchingGrid.computeTriangles(*mRenderer->blobList(), lListTriangles);
 
+    qWarning()<<"le calcul du rendu à pris "<<lTime.elapsed()<<" ms";
+    mRenderer->setTriangleList( lListTriangles );
 }
 
 void PFE::drawCloud( int pValue ){
@@ -139,6 +162,7 @@ void PFE::drawDeepOctree( int pValue ) {
 }
 
 void PFE::setDrawingRadius(int pValue) {
+    qWarning()<<pValue;
     static int sPreviousValue = 0;
 
     // clearing old value to render
@@ -167,6 +191,10 @@ void PFE::setDrawingRadius(int pValue) {
         }
         case 6:{
             sPreviousValue = DRAW_BLOBS_THR_DEEP;
+            break;
+        }
+        case 7: {
+            sPreviousValue = DRAW_FUSION;
             break;
         }
         default: {
