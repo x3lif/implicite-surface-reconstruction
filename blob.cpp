@@ -1,4 +1,5 @@
 ﻿#include "blob.h"
+#include <GL/freeglut.h>
 #include <math.h>
 
 extern GLfloat rx, ry, rz;
@@ -690,16 +691,17 @@ double CList_BLob::Compute_Val(const QVector3D& pPoint) const
     /**
       * New code
       */
-    double lValue = 0; double lTemp1, lTemp2;
-    //QListIterator<CBlob*> lIte(mBlobList);
+    double lValue = 0; double lTemp1=0.0, lTemp2=0.0, dInfParam=0.0;
     QVectorIterator<CBlob*> lIte(mBlobList);
     while(lIte.hasNext()) {
-        CBlob* lTemp = lIte.next();
+        const CBlob* lTemp = lIte.next();
+        dInfParam=lTemp->getInfParam();
+
         lTemp1=lTemp->computeDistance(pPoint);
-        lTemp2=lTemp->getRadius()*lTemp->getInfParam();
+        lTemp2=lTemp->getRadius()*dInfParam;
 
         if (lTemp1<=lTemp2)
-                lValue=lValue+lTemp->computeVal(lTemp1)*lTemp->getInfParam();
+                lValue=lValue+lTemp->computeVal(lTemp1)*dInfParam;
     }
     return lValue;
 }

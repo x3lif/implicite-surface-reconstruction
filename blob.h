@@ -14,7 +14,6 @@
 #define __BLOB_H__
 
 #define MAX_POINT 20000
-#include <GL/freeglut.h>
 #include "voxel.h"
 #include "octree.h"
 #include <QVector3D>
