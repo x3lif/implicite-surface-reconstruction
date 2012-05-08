@@ -5,6 +5,7 @@
  *      Author: guillaume
  */
 
+#include <GL/glew.h>
 #include "cloud.h"
 #include <QDebug>
 #include <QStringList>
@@ -13,7 +14,6 @@
 Cloud::Cloud() {
 	mNbPoints = 0;
 }
-
 
 Cloud::Cloud( QString& pFile ){
 	// TODO Auto-generated constructor stub
@@ -38,6 +38,11 @@ Cloud::Cloud( QString& pFile ){
                 mPointList << lTokIterator.next().toFloat();
 	}
         qWarning()<<mPointList.size()<<mNbPoints;
+
+        mGLBatch.Begin(GL_POINTS, mNbPoints);
+        mGLBatch.CopyVertexData3f( mPointList.data() );
+        mGLBatch.End();
+
 }
 
 Cloud::Cloud(QVector<QVector3D>& pCloud) {
@@ -59,11 +64,14 @@ void Cloud::Draw() {
 
         glDisable(GL_LIGHTING);
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+        /*glEnableClientState(GL_VERTEX_ARRAY);
 	glColor3f(1.0f,0.0f,0.0f);
 	glVertexPointer(3, GL_FLOAT, 0, mPointList.data());
 	glDrawArrays(GL_POINTS, 0, mNbPoints);
-	glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);*/
+
+        glColor3f(1.0f,0.0f,0.0f);
+        mGLBatch.Draw();
 
         glEnable(GL_LIGHTING);
 }

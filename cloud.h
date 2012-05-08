@@ -8,7 +8,7 @@
 #ifndef CLOUD_H_
 #define CLOUD_H_
 
-#include <GL/glut.h>
+#include <GLTools.h>
 #include <QString>
 #include <QFile>
 #include <QVector>
@@ -27,9 +27,10 @@ public:
 	CVoxel_8 boundingBox();
 
 public :
-	int 			mNbPoints;
-	QFile 			mFile;
+        int             mNbPoints;
+        QFile 		mFile;
 	QVector<float> 	mPointList;
+        GLBatch         mGLBatch;
 };
 
 #endif /* CLOUD_H_ */
