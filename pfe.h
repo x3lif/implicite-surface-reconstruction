@@ -1,6 +1,7 @@
 #ifndef PFE_H
 #define PFE_H
 
+#include "utils.h"
 #include <QtGui/QWidget>
 #include <QDebug>
 #include "ui_pfe.h"
@@ -26,6 +27,9 @@ protected slots:
     void drawDeepOctree( int pValue );
     void setDrawingRadius(int pValue);
     void computeBlobsRendering();
+
+protected:
+    QVector<float> fromTriangleListToVertexes(const QList<CTriangle>& pList);
 
 private:
     Ui_Main 	ui;

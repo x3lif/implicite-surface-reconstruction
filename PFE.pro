@@ -1,7 +1,13 @@
 TEMPLATE = app
 TARGET = PFE
 
-QMAKE_CXXFLAGS_RELEASE	= -march=native
+QMAKE_CFLAGS+=-pg
+QMAKE_CXXFLAGS+=-pg
+QMAKE_LFLAGS+=-pg
+
+QMAKE_CXXFLAGS_RELEASE	+= -march=native
+
+INCLUDEPATH += ./third-party/GLTools/
 
 QT += core \
     gui \
@@ -14,7 +20,12 @@ HEADERS += utils.h \
     octree.h \
     blob.h \
     mc.h \
-    triangle.h
+    triangle.h \
+    ./third-party/GLTools/GLTools.h \
+    ./third-party/GLTools/GLBatch.h \
+    ./third-party/GLTools/GLTriangleBatch.h  \
+    ./third-party/GLTools/GLShaderManager.h
+
 SOURCES += utils.cpp \
     voxel.cpp \
     cloud.cpp \
@@ -24,7 +35,12 @@ SOURCES += utils.cpp \
     octree.cpp \
     blob.cpp \
     mc.cpp \
-    triangle.cpp
+    triangle.cpp \
+    ./third-party/GLTools/GLTools.cpp \
+    ./third-party/GLTools/GLBatch.cpp \
+    ./third-party/GLTools/GLTriangleBatch.cpp \
+    ./third-party/GLTools/GLShaderManager.cpp
+
 FORMS += pfe.ui
 RESOURCES += 
 LIBS += -lGLU \

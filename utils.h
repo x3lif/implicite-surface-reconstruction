@@ -1,6 +1,8 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
+#include <QVector3D>
+
 class CBlob;
 
 double Distance3D (const QVector3D& a, const QVector3D& b);

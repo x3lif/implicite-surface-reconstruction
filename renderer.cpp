@@ -7,6 +7,7 @@
 
 #include "renderer.h"
 #include <QTime>
+#include <QVector3D>
 
 GLfloat gLight0[3][4] = { {0.1f, 0.1f, 0.3f, 1.0f},
                              {0.5f, 0.5f, 1.0f, 1.0f},
@@ -16,7 +17,8 @@ GLfloat gLight1[3][4] = { {0.1f, 0.1f, 0.3f, 1.0f},
                              {1.0f, 0.5f, 0.5f, 1.0f},
                              {-4.0f, -4.0f, 4.0f, 0.0f} };
 
-Renderer::Renderer( QWidget* pParent) {
+Renderer::Renderer( QWidget* pParent)
+{
 	// TODO Auto-generated constructor stub
         mThingsToDraw = DRAW_CLOUDS;
 	QObject::connect( &mTimer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -35,8 +37,6 @@ Renderer::Renderer( QWidget* pParent) {
 	mTimer.start( 24 );
 
         this->setMouseTracking(true);
-
-
 }
 
 Renderer::~Renderer() {
@@ -112,24 +112,37 @@ void Renderer::paintGL() {
              mListBlobs.drawBlobsInfluence( 1 );
          }
 
-         if( !mTriangleList.isEmpty() && (mThingsToDraw&DRAW_FUSION) ) {
-             QListIterator<CTriangle> lIte(mTriangleList);
+         // Draw the Cloud
+         if(mCloud != NULL && (mThingsToDraw & DRAW_CLOUDS ) ) {
+             mCloud->Draw();
+         }
+
+         if( !mTriangleVertex.isEmpty() && (mThingsToDraw&DRAW_FUSION) ) {
+             /*QListIterator<CTriangle> lIte(mTriangleList);
              while( lIte.hasNext() ) {
                  CTriangle lTemp = lIte.next();
                  lTemp.Draw();
-             }
-         }
+             }*/
 
-         // Draw the Cloud
-         if(mCloud != NULL && (mThingsToDraw & DRAW_CLOUDS ) ) {
-                 mCloud->Draw();
+             float lColor[] = {1.0,0,0,1.0};
+             //mShaderManager.UseStockShader(GLT_SHADER_IDENTITY, lRed);
+             glEnable(GL_COLOR_MATERIAL);
+             glColor3f(1.0,1.0,1.0);
+             glPushMatrix();
+
+                lColor[0] = lColor[1] = lColor[2] = 0.5; lColor[3]=1.0;
+                glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, lColor);
+                mGLTriangles.Draw();
+             glPopMatrix();
+             glDisable(GL_COLOR_MATERIAL);
          }
          //qWarning()<<lTime.elapsed();
-         //qWarning()<<QString((const char*)glGetString(GL_VERSION));
 }
 
 
 void Renderer::initializeGL() {
+    glewInit();
+
     glClearColor(0, 0, 0, 0);
     resizeGL( parentWidget()->size() );
 
@@ -151,6 +164,8 @@ void Renderer::initializeGL() {
     glLightfv(GL_LIGHT1, GL_AMBIENT, gLight1[0] );
     glLightfv(GL_LIGHT1, GL_DIFFUSE, gLight1[1] );
     glLightfv(GL_LIGHT1, GL_POSITION, gLight1[2] );
+
+    mShaderManager.InitializeStockShaders();
 
 }
 
@@ -217,10 +232,19 @@ CList_BLob* Renderer::blobList() {
     return &mListBlobs;
 }
 
-QList<CTriangle>& Renderer::triangleList() {
-    return mTriangleList;
+QVector<float>& Renderer::triangleVertexes() {
+    return mTriangleVertex;
 }
 
-void Renderer::setTriangleList(const QList<CTriangle>& pList) {
-    mTriangleList = pList;
+void Renderer::setTriangleVertexes(const QVector<float>& pVertexs) {
+    if(pVertexs.size()%3 != 0)  return;
+
+    mTriangleVertex = pVertexs;
+    // specify the type pf draw and nbVertex per coordinate
+    mGLTriangles.Begin(GL_TRIANGLES, pVertexs.size()/3);
+    //copy informations
+    mGLTriangles.CopyVertexData3f( (GLfloat*)mTriangleVertex.data() );
+    // need explications?
+    mGLTriangles.End();
+
 }

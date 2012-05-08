@@ -1,6 +1,7 @@
 #include "octree.h"
 #include "cloud.h"
 #include "utils.h"
+#include "GL/glew.h"
 
 // -------------------
 // Classe COctree_Node

@@ -30,37 +30,5 @@ public:
 	void Draw(void);
 };
 
-/*class CTriangle_Linked:public CTriangle
-{
-protected:
-	CTriangle_Linked *Prec,*Next;
-public:
-	CTriangle_Linked(void);
-	~CTriangle_Linked(void);
-	CTriangle_Linked * Get_Prec(void);
-	CTriangle_Linked * Get_Next(void);
-friend class Clist_Triangle;
-};
-
-class Clist_Triangle
-{
-protected:
-	CTriangle_Linked *First,*Last;
-	int Nb_Triangles;
-	CVoxel_8 BB;
-public:
-	Clist_Triangle(void);
-	void Clear_Clist_Triangle(void);
-	int Get_Nb_Triangles(void);
-	CVoxel_8 Get_BB(void);
-	void Add_Triangle(CPoint_3D[3],CPoint_3D[3]);
-	void Add_Triangle(CPoint_3D[3],CPoint_3D[3],float [3][4]);
-	void Add_Triangle(CVertex_3D[3]);
-	void Add_Triangle(CVertex_3D,CVertex_3D,CVertex_3D);
-	void List_Info(void);
-	void Draw(void);
-};
-*/
-
 #endif /* __TRIANGLE_H__ */
 

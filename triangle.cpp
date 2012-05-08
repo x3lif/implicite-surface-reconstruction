@@ -1,6 +1,6 @@
 #include "triangle.h"
+#include "GL/glew.h"
 #include <QDebug>
-#include <GL/gl.h>
 
 // ---------------
 // class CTriangle
@@ -122,6 +122,7 @@ void CTriangle::Draw(void)
         }
 
             //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, lColor);
+        //lColor[0] = lColor[1] = lColor[2] = 0.5; lColor[3]=1.0;
             glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, lColor);
             //glNormal3d(mNormalTab[i].x(), mNormalTab[i].y(), mNormalTab[i].z());
             glVertex3d(mPointsTab[i].x(), mPointsTab[i].y(), mPointsTab[i].z());

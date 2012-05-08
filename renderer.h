@@ -8,6 +8,7 @@
 #ifndef RENDERER_H_
 #define RENDERER_H_
 
+#include <GLTools.h>
 #include <QDebug>
 #include <QGLWidget>
 #include <QtCore/QTimer>
@@ -16,6 +17,9 @@
 #include "octree.h"
 #include "blob.h"
 #include "triangle.h"
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+
 
 #define DRAW_CLOUDS             0x0001
 #define DRAW_FUSION             0x0002
@@ -46,8 +50,9 @@ public:
 	CVoxel_Tab* voxelTab();
         COctree*    octree();
         CList_BLob* blobList();
-        QList<CTriangle>& triangleList();
-        void setTriangleList(const QList<CTriangle>& pList);
+        QVector<float>& triangleVertexes();
+        void        setTriangleVertexes(const QVector<float>& pVertexs);
+
 
 protected:
 	// inerhited methods.
@@ -76,7 +81,9 @@ private:
         QPointF mMousePos;
         COctree mOctree;
         CList_BLob mListBlobs;
-        QList<CTriangle> mTriangleList;
+        GLShaderManager mShaderManager;
+        QVector<float> mTriangleVertex;
+        GLBatch     mGLTriangles;
 };
 
 #endif /* RENDERER_H_ */

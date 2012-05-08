@@ -1,7 +1,6 @@
 #ifndef __VOXEL_H__
 #define __VOXEL_H__
 
-#include "GL/glut.h"
 #include <QVector3D>
 #include <QVector>
 

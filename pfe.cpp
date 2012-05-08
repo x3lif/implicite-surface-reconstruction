@@ -1,7 +1,8 @@
 #include "pfe.h"
+#include "mc.h"
 #include "voxel.h"
 #include "blob.h"
-#include "mc.h"
+
 #include <QFileDialog>
 #include <QTime>
 #include <QButtonGroup>
@@ -10,7 +11,7 @@ PFE::PFE(QWidget *parent)
     : QWidget(parent)
 {
 	ui.setupUi(this);
-	mRenderer = new Renderer( ui.mGLContainer );
+        mRenderer = new Renderer( ui.mGLContainer );
 
         mGroupInfluence = new QButtonGroup;
         mGroupInfluence->setParent(this);
@@ -101,7 +102,7 @@ void PFE::computeBlobsRendering() {
     if( mRenderer->blobList()->size() == 0) return;
 
     // si le rendu à deja été calculé : effacement de la liste de triangle
-    if( !mRenderer->triangleList().isEmpty() ) mRenderer->triangleList().clear();
+    if( !mRenderer->triangleVertexes().isEmpty() ) mRenderer->triangleVertexes().clear();
 
     QTime lTime;
     lTime.start();
@@ -133,7 +134,8 @@ void PFE::computeBlobsRendering() {
     lMarchingGrid.computeTriangles(*mRenderer->blobList(), lListTriangles);
 
     qWarning()<<"le calcul du rendu à pris "<<lTime.elapsed()<<" ms";
-    mRenderer->setTriangleList( lListTriangles );
+    //mRenderer->setTriangleList( lListTriangles );
+    mRenderer->setTriangleVertexes( fromTriangleListToVertexes(lListTriangles) );
 }
 
 void PFE::drawCloud( int pValue ){
@@ -204,4 +206,17 @@ void PFE::setDrawingRadius(int pValue) {
     }
     // send new value to render
     mRenderer->setThingstoDraw(sPreviousValue);
+}
+
+QVector<float> PFE::fromTriangleListToVertexes(const QList<CTriangle>& pList) {
+    QVector<float> lVertexes;
+    QListIterator<CTriangle> lIte(pList);
+    while(lIte.hasNext()) {
+        CTriangle lTempTriangle = lIte.next();
+        for(int i=0;i<3;i++) {
+            QVector3D& lVertex = lTempTriangle.vertex(i);
+            lVertexes<<lVertex.x()<<lVertex.y()<<lVertex.z();
+        }
+    }
+    return lVertexes;
 }
