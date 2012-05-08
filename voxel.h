@@ -1,8 +1,10 @@
 #ifndef __VOXEL_H__
 #define __VOXEL_H__
 
+#include <GLTools.h>
 #include <QVector3D>
 #include <QVector>
+
 
 class Cloud;
 
@@ -27,6 +29,8 @@ protected:
         Dot_List *First,*Last;
 public:
 	QVector<float> mVertexArrayList;
+    GLBatch        mGLBatch;
+
 	CVoxel_8(void);
 	QVector3D Get_Vertex(int) const;
 	void Put_Vertex(int,QVector3D);

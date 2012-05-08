@@ -68,36 +68,66 @@ void CVoxel_8::arrayList() {
     // ensure the arrayList is empty
     mVertexArrayList.clear();
 
-    // Adding points to draw
+    // Adding points to draw / type is lines
     mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
     mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
+    mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
+    mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
     mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
     mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
+    mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
+    mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
+
 
     mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
     mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
+    mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
+    mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
     mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
     mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
+    mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
+    mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
 
     mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
     mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
+    mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
+    mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
     mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
     mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
+    mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
+    mVertexArrayList<<Vertex[5].x()<<Vertex[5].y()<<Vertex[5].z();
 
     mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
     mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
+    mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
+    mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
     mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
     mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
+    mVertexArrayList<<Vertex[4].x()<<Vertex[4].y()<<Vertex[4].z();
+    mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
 
     mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
     mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
+    mVertexArrayList<<Vertex[1].x()<<Vertex[1].y()<<Vertex[1].z();
+    mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
     mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
     mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
+    mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
+    mVertexArrayList<<Vertex[0].x()<<Vertex[0].y()<<Vertex[0].z();
 
     mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
     mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
+    mVertexArrayList<<Vertex[7].x()<<Vertex[7].y()<<Vertex[7].z();
+    mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
     mVertexArrayList<<Vertex[3].x()<<Vertex[3].y()<<Vertex[3].z();
     mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
+    mVertexArrayList<<Vertex[2].x()<<Vertex[2].y()<<Vertex[2].z();
+    mVertexArrayList<<Vertex[6].x()<<Vertex[6].y()<<Vertex[6].z();
+
+
+    mGLBatch.Begin(GL_LINES, mVertexArrayList.size()/3);
+    mGLBatch.CopyVertexData3f( mVertexArrayList.data() );
+    mGLBatch.End();
 }
 
 void CVoxel_8::Draw(void)
@@ -127,17 +157,13 @@ void CVoxel_8::Draw_Lines(void)
     // if the points list is empty -> generate it
 	if(mVertexArrayList.size() == 0)	arrayList();
 
-	glColor3f(0.0,0.0,1.0);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, mVertexArrayList.data());
-                glDrawArrays(GL_LINE_LOOP, 0, 4);
-		glDrawArrays(GL_LINE_LOOP, 4, 4);
-                glDrawArrays(GL_LINE_LOOP, 8, 4);
-		glDrawArrays(GL_LINE_LOOP, 12, 4);
-		glDrawArrays(GL_LINE_LOOP, 16, 4);
-		glDrawArrays(GL_LINE_LOOP, 20, 4);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glColor3f(1.0,1.0,1.0);
+    glDisable(GL_LIGHTING);
+    glColor3f(0.5,0,0.5);
+    glEnable(GL_COLOR_MATERIAL);
+    glPushMatrix();
+        mGLBatch.Draw();
+    glPopMatrix();
+    glEnable(GL_LIGHTING);
 }
 
 // ----------------

@@ -1,5 +1,5 @@
 #include <math.h>
-#include <GL/freeglut.h>
+//#include <GL/freeglut.h>
 #include <QVector3D>
 #include <QDebug>
 #include "blob.h"
