@@ -1,11 +1,12 @@
 TEMPLATE = app
 TARGET = PFE
 
-QMAKE_CFLAGS+=-pg
-QMAKE_CXXFLAGS+=-pg
-QMAKE_LFLAGS+=-pg
+#QMAKE_CFLAGS+=-pg
+#QMAKE_CXXFLAGS+=-pg
+#QMAKE_LFLAGS+=-pg
 
-QMAKE_CXXFLAGS_RELEASE	+= -march=native
+QMAKE_CXXFLAGS_RELEASE	+= -march=native \
+                            -O3
 
 INCLUDEPATH += ./third-party/GLTools/
 
