@@ -121,21 +121,23 @@ void PFE::computeBlobsRendering() {
     lMarchingGrid.boundingBox().Voxel_Info();
     lMarchingGrid.Init_Grid();
 
-    qWarning()<<"1/ "<<lTime.elapsed()<<" ms";
+    qWarning()<<"1/ Init Grid : "<<lTime.elapsed()<<" ms";
     lTime.restart();
     // calculs des valeurs de la grille
 
     lMarchingGrid.Compute_Val( *mRenderer->blobList() );
 
-    qWarning()<<"2/ "<<lTime.elapsed()<<" ms";
+    qWarning()<<"2/ Compute Val : "<<lTime.elapsed()<<" ms";
     lTime.restart();
 
     // calcul des triangles
     lMarchingGrid.computeTriangles(*mRenderer->blobList(), lListTriangles);
 
-    qWarning()<<"le calcul du rendu à pris "<<lTime.elapsed()<<" ms";
+    qWarning()<<"3/ Compute Triangles "<<lTime.elapsed()<<" ms";
+    lTime.restart();
     //mRenderer->setTriangleList( lListTriangles );
     mRenderer->setTriangleVertexes( fromTriangleListToVertexes(lListTriangles) );
+    qWarning()<<"4/ SetTriangleVertexes : "<<lTime.elapsed()<<" ms";
 }
 
 void PFE::drawCloud( int pValue ){

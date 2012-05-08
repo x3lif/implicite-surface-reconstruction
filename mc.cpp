@@ -557,7 +557,7 @@ CVoxel_8 CMarching_Grid::globalBox(void)
 
 void CMarching_Grid::Compute_Val(const CList_BLob& LB)
 {
-    int i,j,k;
+    int i=0,j=0,k=0;
     for (i=0;i<mDimension;++i)
         for (j=0;j<mDimension;++j)
             for (k=0;k<mDimension;++k)

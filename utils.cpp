@@ -6,7 +6,9 @@
 
 double Distance3D (const QVector3D& a, const QVector3D& b)
 {
-        return (a-b).length();
+    float ax=a.x(),ay=a.y(),az=a.z(),bx=b.x(),by=b.y(),bz=b.z();
+    return sqrt((ax-bx)*(ax-bx) + (ay-by)*(ay-by) + (az-bz)*(az-bz));
+    return (a-b).length();
 }
 
 double Distance3D_Square (const QVector3D& a, const QVector3D& b)

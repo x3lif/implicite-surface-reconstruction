@@ -48,10 +48,15 @@ Cloud::Cloud( QString& pFile ){
 Cloud::Cloud(QVector<QVector3D>& pCloud) {
     mNbPoints = pCloud.size();
 
-    QVectorIterator<QVector3D> lIte( pCloud );
+    /*QVectorIterator<QVector3D> lIte( pCloud );
     while( lIte.hasNext() ) {
         const QVector3D& lPoint = lIte.next();
         mPointList<<lPoint.x()<<lPoint.y()<<lPoint.z();
+    }*/
+    for(int i=0;i<pCloud.size();++i)
+    {
+        const QVector3D& lTemp = pCloud.at(i);
+        mPointList<<lTemp.x()<<lTemp.y()<<lTemp.z();
     }
 }
 

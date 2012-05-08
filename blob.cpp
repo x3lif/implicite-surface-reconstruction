@@ -379,11 +379,22 @@ CBlob* CList_BLob::Nearest_Blob(QVector3D p)
     /** New Code */
     CBlob* lClosestBlob = mBlobList.first();
     double lDist = 1000000000;
-    QVectorIterator<CBlob*> lIte(mBlobList);
+    /*QVectorIterator<CBlob*> lIte(mBlobList);
     while(lIte.hasNext()) {
         CBlob* lTemp = lIte.next();
         double lTempDist = lTemp->computeDistance(p);
         if( lTempDist < lDist) {
+            lClosestBlob = lTemp;
+            lDist = lTempDist;
+        }
+    }*/
+    double lTempDist = 0.0;
+    for(int i=0;i<mBlobList.size();++i)
+    {
+        CBlob* lTemp = mBlobList.at(i);
+        lTempDist=lTemp->computeDistance(p);
+        if(lTempDist<lDist)
+        {
             lClosestBlob = lTemp;
             lDist = lTempDist;
         }
@@ -394,8 +405,6 @@ CBlob* CList_BLob::Nearest_Blob(QVector3D p)
 
 void CList_BLob::drawBlobsThreshold(int pBlobType) const
 {
-
-    //QListIterator<CBlob*> lIte(mBlobList);
     QVectorIterator<CBlob*> lIte(mBlobList);
     while(lIte.hasNext()) {
         CBlob* lTemp = lIte.next();
@@ -403,6 +412,15 @@ void CList_BLob::drawBlobsThreshold(int pBlobType) const
             lTemp->drawThreshold();
         }
     }
+
+   /* for(int i=0;i<mBlobList.size();++i)
+    {
+        const CBlob* lTemp = mBlobList.at(i);
+        if( lTemp->getTypeReconstruction()==pBlobType )
+        {
+            lTemp->drawThreshold();
+        }
+    }*/
 }
 
 void CList_BLob::drawBlobsInfluence(int pBlobType) const
@@ -415,6 +433,14 @@ void CList_BLob::drawBlobsInfluence(int pBlobType) const
             lTemp->drawInfluence();
         }
     }
+    /*for(int i=0;i<mBlobList.size();++i)
+    {
+        const CBlob* lTemp = mBlobList.at(i);
+        if( lTemp->getTypeReconstruction()==pBlobType )
+        {
+            lTemp->drawInfluence();
+        }
+    }*/
 }
 
 void CList_BLob::readVoxellization(QVector<QVector3D> pPointTab,CVoxel_Tab* pVoxelTab, double pThreshold)
@@ -692,9 +718,20 @@ double CList_BLob::Compute_Val(const QVector3D& pPoint) const
       * New code
       */
     double lValue = 0; double lTemp1=0.0, lTemp2=0.0, dInfParam=0.0;
-    QVectorIterator<CBlob*> lIte(mBlobList);
-    while(lIte.hasNext()) {
+   // QVectorIterator<CBlob*> lIte(mBlobList);
+    /*while(lIte.hasNext()) {
         const CBlob* lTemp = lIte.next();
+        dInfParam=lTemp->getInfParam();
+
+        lTemp1=lTemp->computeDistance(pPoint);
+        lTemp2=lTemp->getRadius()*dInfParam;
+
+        if (lTemp1<=lTemp2)
+                lValue=lValue+lTemp->computeVal(lTemp1)*dInfParam;
+    }*/
+    for(int i=0;i<mBlobList.size();++i)
+    {
+        const CBlob* lTemp = mBlobList.at(i);
         dInfParam=lTemp->getInfParam();
 
         lTemp1=lTemp->computeDistance(pPoint);
