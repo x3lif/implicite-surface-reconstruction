@@ -1,4 +1,5 @@
 ﻿#include "blob.h"
+#include "utils.h"
 #include <GL/freeglut.h>
 #include <math.h>
 
@@ -6,8 +7,12 @@ extern GLfloat rx, ry, rz;
 extern GLfloat tx, ty, tz;
 
 //constructeur
-CBlob::CBlob(void)
-{}
+CBlob::CBlob(void):
+    mInfluenceBatch(),
+    mThresholdBatch(),
+    mFrame()
+{
+}
 
 //Destructeur
 CBlob::~CBlob(void)
@@ -25,19 +30,27 @@ int CBlob::type(){
 //constructeur
 CBlob_Spherical::CBlob_Spherical(void)
 {	
+    qWarning()<<__func__;
         mCenter.setX(0);mCenter.setY(0);mCenter.setZ(0);
         mRadius=1.0;mInfParam=1.0;mTypeFunction=1;
         mColor.setRedF(0.50);mColor.setGreenF(0.40);mColor.setBlue(0.70);mColor.setAlphaF(1.0);
+        gltMakeSphere(mThresholdBatch, mRadius, 15, 15);
+        gltMakeSphere(mInfluenceBatch, mRadius, 15, 15);
+        mFrame.SetOrigin(0,0,0);
 }
 
 //Constructeur
 CBlob_Spherical::CBlob_Spherical(QVector3D pCenter, double pRadius, double pInfParam, int pTypeFunction, QColor pColor)
 {
+    qWarning()<<__func__<<mCenter.x()<<mCenter.y()<<mCenter.z();
     mCenter = pCenter;
     mRadius = pRadius;
     mInfParam = pInfParam;
     mTypeFunction = pTypeFunction;
     mColor = pColor;
+    gltMakeSphere(mThresholdBatch, mRadius, 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
+    gltMakeSphere(mInfluenceBatch, mRadius*mInfParam, 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
+    mFrame.SetOrigin(mCenter.x(), mCenter.y(), mCenter.z());
 }
 
 //destructeur
@@ -87,22 +100,33 @@ const QColor& CBlob_Spherical::getColor(void) const
 //position du centre du blob
 void CBlob_Spherical::setCenter(QVector3D c)
 {
+    qWarning()<<__func__;
         mCenter=c;
+       mFrame.SetOrigin(mCenter.x(), mCenter.y(), mCenter.z());
 }
 
 //rayon du bob
 void CBlob_Spherical::setRadius(double r)
 {
+    qWarning()<<__func__;
     mRadius=r;
+    gltMakeSphere(mThresholdBatch, mRadius, 15, 15);
+    gltMakeSphere(mInfluenceBatch, mRadius*mInfParam, 15, 15);
 }
 
 void CBlob_Spherical::setInfParam(double i)
 {
+    qWarning()<<__func__;
         mInfParam=i;
+        gltMakeSphere(mThresholdBatch, mRadius, 15, 15);
+        gltMakeSphere(mInfluenceBatch, mRadius*mInfParam, 15, 15);
 }
 
 void CBlob_Spherical::setThreshold(double t) {
+    qWarning()<<__func__<<mCenter.x()<<mCenter.y()<<mCenter.z();
     mThreshold = t;
+    gltMakeSphere(mThresholdBatch, mRadius, 15, 15);
+    gltMakeSphere(mInfluenceBatch, mRadius*mInfParam, 15, 15);
 }
 
 //fonction pour creation du blob
@@ -114,7 +138,7 @@ void CBlob_Spherical::setTypeFunction(int t)
 // fonction pour la reconstruction
 void CBlob_Spherical::setTypeReconstruction(int t)
 {
-        mTypeReconstruction=t;
+    mTypeReconstruction=t;
 }
 
 //fonctio pour regler la couleur
@@ -126,10 +150,12 @@ void CBlob_Spherical::setColor(const QColor& pNewColor)
 //opérateur d'égalité
 CBlob_Spherical& CBlob_Spherical::operator = (const CBlob_Spherical & b)
 {
-        mCenter=b.getCenter();
+    setCenter(b.getCenter());
         mRadius=b.getRadius();mInfParam=b.getInfParam();mTypeFunction=b.getTypeFunction();
         //Color[0]=b.Color[0];Color[1]=b.Color[1];Color[2]=b.Color[2];Color[3]=b.Color[3];
         mColor = b.getColor();
+        // set threshold and compute rendering
+        setThreshold(b.getThreshold());
 
         return *this;
 }
@@ -212,13 +238,17 @@ double CBlob_Spherical::computeVal(double r) const
 	return (val);
 }
 
-void CBlob_Spherical::drawInfluence() const {
-    drawSpherical( 15, 15, mRadius );
+void CBlob_Spherical::drawInfluence() const
+{
+    mInfluenceBatch.Draw();
+    //drawSpherical( 15, 15, mRadius );
 }
 
 void CBlob_Spherical::drawThreshold() const {
-    float lRadius = mRadius*(sqrt(1-sqrt(mThreshold)));
-    drawSpherical( 15, 15, lRadius );
+    //float lRadius = mRadius*(sqrt(1-sqrt(mThreshold)));
+    //drawSpherical( 15, 15, lRadius );
+    qWarning()<<"Drawing blob !";
+    mThresholdBatch.Draw();
 }
 
 //dessine le blob sphérique

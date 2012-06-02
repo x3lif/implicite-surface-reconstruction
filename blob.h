@@ -20,6 +20,9 @@
 #include <QColor>
 #include <QDebug>
 #include "utils.h"
+#include <GLBatch.h>
+#include <GLTriangleBatch.h>
+#include <GLFrame.h>
 
 /*typedef struct Tree
 {
@@ -29,7 +32,7 @@
 } Tree;*/
 
 enum {
-        Generique = 0,
+    Generique = 0,
 	Spherique,
 	Cylindrique
 };
@@ -73,6 +76,9 @@ public:
         virtual const QVector3D& getSegmentA() const =0;
         virtual const QVector3D& getSegmentB()const =0;
         virtual CBlob* clone() const =0;
+    GLTriangleBatch mInfluenceBatch;
+    GLTriangleBatch mThresholdBatch;
+    GLFrame         mFrame;
 };
 
 class CBlob_Spherical:public CBlob

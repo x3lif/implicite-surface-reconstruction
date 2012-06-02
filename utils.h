@@ -3,6 +3,10 @@
 
 #include <QVector3D>
 
+#include <GLTools.h>
+#include <GLBatch.h>
+#include <GLTriangleBatch.h>
+
 class CBlob;
 
 double Distance3D (const QVector3D& a, const QVector3D& b);
@@ -27,6 +31,7 @@ double AngleYZ(CBlob*);
 double absolut(double);
 
 void Draw_Sphere (float r,int parallele,int meridien);
+void gltMakeSphere(GLTriangleBatch& sphereBatch, GLfloat fRadius, GLint iSlices, GLint iStacks, float posX, float posY, float posZ);
 
 #endif /* __UTILS_H__ */
 

@@ -157,13 +157,13 @@ void CVoxel_8::Draw_Lines(void)
     // if the points list is empty -> generate it
 	if(mVertexArrayList.size() == 0)	arrayList();
 
-    glDisable(GL_LIGHTING);
+    /*glDisable(GL_LIGHTING);
     glColor3f(0.5,0,0.5);
     glEnable(GL_COLOR_MATERIAL);
-    glPushMatrix();
+    glPushMatrix();*/
         mGLBatch.Draw();
-    glPopMatrix();
-    glEnable(GL_LIGHTING);
+    /*glPopMatrix();
+    glEnable(GL_LIGHTING);*/
 }
 
 // ----------------

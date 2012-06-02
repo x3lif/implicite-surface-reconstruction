@@ -25,6 +25,7 @@ public:
 	int getNbPoints();
         QVector<QVector3D> getPoints();
 	CVoxel_8 boundingBox();
+    const QVector<float>& getFloatsList() const;
 
 public :
         int             mNbPoints;

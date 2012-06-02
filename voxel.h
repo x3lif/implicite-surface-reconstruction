@@ -25,8 +25,7 @@ class CVoxel_8
 {
 protected:
 	QVector3D Vertex[8];
-
-        Dot_List *First,*Last;
+    Dot_List *First,*Last;
 public:
 	QVector<float> mVertexArrayList;
     GLBatch        mGLBatch;

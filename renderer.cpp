@@ -17,7 +17,8 @@ GLfloat gLight1[3][4] = { {0.1f, 0.1f, 0.3f, 1.0f},
                              {1.0f, 0.5f, 0.5f, 1.0f},
                              {-4.0f, -4.0f, 4.0f, 0.0f} };
 
-Renderer::Renderer( QWidget* pParent)
+Renderer::Renderer( QWidget* pParent):
+    mCameraFrame()
 {
 	// TODO Auto-generated constructor stub
         mThingsToDraw = DRAW_CLOUDS;
@@ -35,6 +36,8 @@ Renderer::Renderer( QWidget* pParent)
 	mRot<<0<<0;
 
 	mTimer.start( 24 );
+    mProjectionMatrix.LoadIdentity();
+    mModelViewMatrix.LoadIdentity();
 
         this->setMouseTracking(true);
 }
@@ -60,93 +63,130 @@ void Renderer::paintGL() {
         QTime lTime;
         lTime.start();
 
-	 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+     float lColor[] = {1.0,0,0,1.0};
+     //glEnable(GL_POINT);
 
-	 glMatrixMode( GL_PROJECTION );
-	 glLoadIdentity();
-         gluPerspective( 45, (float)this->width()/(float)this->height(), 0.0001, 999.0 );
+     //glMatrixMode( GL_PROJECTION );
+     //glLoadIdentity();
+         //gluPerspective( 45, (float)this->width()/(float)this->height(), 0.0001, 999.0 );
 
-	 glMatrixMode( GL_MODELVIEW );
-	 glLoadIdentity();
-	 gluLookAt(	mCam[0], mCam[1], mCam[2],
+     //glMatrixMode( GL_MODELVIEW );
+     //glLoadIdentity();
+     /*gluLookAt(	mCam[0], mCam[1], mCam[2],
 				mCam[3], mCam[4], mCam[5],
-                                mCam[6], mCam[7], mCam[8]);
+                mCam[6], mCam[7], mCam[8]);
+      */
 
-	 glRotatef( mRot[0], 0.0f, 0.0f, 1.0f );
-	 glRotatef( mRot[1], 1.0f, 0.0f, 0.0f );
-	 glPointSize(2);
+     //glRotatef( mRot[0], 0.0f, 0.0f, 1.0f );
+     //glRotatef( mRot[1], 1.0f, 0.0f, 0.0f );
+     mModelViewMatrix.PushMatrix();
 
-         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+/*     mShaderManager.UseStockShader(GLT_SHADER_FLAT,
+                                      mTransformPipeline.GetModelViewProjectionMatrix(),
+                                      lColor);
+*/
+     M3DMatrix44f mCamera;
+     mCameraFrame.GetCameraMatrix(mCamera);
+     mModelViewMatrix.PushMatrix(mCamera);
+     //mModelViewMatrix.PushMatrix();
+     /*mModelViewMatrix.Rotate(mRot[0],0,0,1);
+     mModelViewMatrix.Rotate(mRot[1],1,0,1);
+     */
 
-	 // Draw voxels
-	 if( mThingsToDraw & DRAW_OCTREE_OUT) {
+     glPointSize(2.0f);
+     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+     mShaderManager.UseStockShader(GLT_SHADER_FLAT,
+                                      mTransformPipeline.GetModelViewProjectionMatrix(),
+                                      lColor);
+     sphereBatch.Draw();
+
+      // Draw the Cloud
+      if(mCloud != NULL && (mThingsToDraw & DRAW_CLOUDS ) ) {
+          mCloud->Draw();
+      }
+      //mModelViewMatrix.PopMatrix();
+
+     // Draw voxels
+     if( mThingsToDraw & DRAW_OCTREE_OUT) {
 		 mVT.Draw_State( 0 );
 	 }
-	 if( mThingsToDraw & DRAW_OCTREE_INOUT ) {
+     if( mThingsToDraw & DRAW_OCTREE_INOUT ) {
 		 mVT.Draw_State( 1 );
 	 }
 	 if( mThingsToDraw & DRAW_OCTREE_INNER ) {
 		 mVT.Draw_State( 2 );
 	 }
-         if( mThingsToDraw & DRAW_OCTREE_DEEP ) {
+     if( mThingsToDraw & DRAW_OCTREE_DEEP ) {
 		 mVT.Draw_State( 3 );
 	 }
 
-         if( mThingsToDraw & DRAW_BLOBS_EFF_DEEP ) {
-             mListBlobs.drawBlobsThreshold( 3 );
-         }
-         if( mThingsToDraw & DRAW_BLOBS_EFF_IN ) {
-             mListBlobs.drawBlobsThreshold( 2 );
-         }
-         if( mThingsToDraw & DRAW_BLOBS_EFF_INOUT ) {
-             mListBlobs.drawBlobsThreshold( 1 );
-         }
+     if( mThingsToDraw & DRAW_BLOBS_EFF_DEEP ) {
+         mListBlobs.drawBlobsThreshold( 3 );
+     }
+    if( mThingsToDraw & DRAW_BLOBS_EFF_IN ) {
+         mListBlobs.drawBlobsThreshold( 2 );
+     }
+     if( mThingsToDraw & DRAW_BLOBS_EFF_INOUT ) {
+         mListBlobs.drawBlobsThreshold( 1 );
+     }
 
-         if( mThingsToDraw & DRAW_BLOBS_THR_DEEP ) {
-             mListBlobs.drawBlobsInfluence( 3 );
-         }
-         if( mThingsToDraw & DRAW_BLOBS_THR_IN ) {
-             mListBlobs.drawBlobsInfluence( 2 );
-         }
-         if( mThingsToDraw & DRAW_BLOBS_THR_INOUT ) {
-             mListBlobs.drawBlobsInfluence( 1 );
-         }
+     mModelViewMatrix.PopMatrix();
+     mModelViewMatrix.PopMatrix();
 
-         // Draw the Cloud
-         if(mCloud != NULL && (mThingsToDraw & DRAW_CLOUDS ) ) {
-             mCloud->Draw();
-         }
+/*   if( mThingsToDraw & DRAW_BLOBS_THR_DEEP ) {
+         mListBlobs.drawBlobsInfluence( 3 );
+     }
+     if( mThingsToDraw & DRAW_BLOBS_THR_IN ) {
+         mListBlobs.drawBlobsInfluence( 2 );
+     }
+     if( mThingsToDraw & DRAW_BLOBS_THR_INOUT ) {
+         mListBlobs.drawBlobsInfluence( 1 );
+     }
 
-         if( !mTriangleVertex.isEmpty() && (mThingsToDraw&DRAW_FUSION) ) {
-             /*QListIterator<CTriangle> lIte(mTriangleList);
-             while( lIte.hasNext() ) {
-                 CTriangle lTemp = lIte.next();
-                 lTemp.Draw();
-             }*/
 
-             float lColor[] = {1.0,0,0,1.0};
-             //mShaderManager.UseStockShader(GLT_SHADER_IDENTITY, lRed);
-             glEnable(GL_COLOR_MATERIAL);
-             glColor3f(1.0,1.0,1.0);
-             glPushMatrix();
+     if( !mTriangleVertex.isEmpty() && (mThingsToDraw&DRAW_FUSION) ) {
+         /*QListIterator<CTriangle> lIte(mTriangleList);
+         while( lIte.hasNext() ) {
+             CTriangle lTemp = lIte.next();
+             lTemp.Draw();
+         }*/
 
-                lColor[0] = lColor[1] = lColor[2] = 0.5; lColor[3]=1.0;
-                glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, lColor);
-                mGLTriangles.Draw();
-             glPopMatrix();
-             glDisable(GL_COLOR_MATERIAL);
-         }
-         //qWarning()<<lTime.elapsed();
+         //mShaderManager.UseStockShader(GLT_SHADER_IDENTITY, lRed);
+    /*     glEnable(GL_COLOR_MATERIAL);
+         glColor3f(1.0,1.0,1.0);
+         glPushMatrix();
+            lColor[0] = lColor[1] = lColor[2] = 0.5; lColor[3]=1.0;
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, lColor);
+            mGLTriangles.Draw();
+         glPopMatrix();
+         glDisable(GL_COLOR_MATERIAL);
+     }
+     //qWarning()<<lTime.elapsed();
+     */
+
+
 }
 
 
 void Renderer::initializeGL() {
-    glewInit();
+    gltSetWorkingDirectory("");
+    GLenum err = glewInit();
+    if (GLEW_OK != err) {
+        qWarning()<<"GLEW Error: "<<glewGetErrorString(err);
+    }
 
     glClearColor(0, 0, 0, 0);
-    resizeGL( parentWidget()->size() );
+    this->resizeGL( parentWidget()->size() );
 
-    glEnable(GL_LIGHTING);
+    mCameraFrame.MoveForward(-4.0);
+
+    mShaderManager.InitializeStockShaders();
+
+    glEnable(GL_DEPTH_TEST);
+    glClearColor(0.2,0.2,0.2,1.0f);
+
+   /* glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_COLOR_MATERIAL);
@@ -156,25 +196,45 @@ void Renderer::initializeGL() {
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, gLight0[0] );
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, gLight0[1] );
-    glLightfv(GL_LIGHT0, GL_POSITION, gLight0[2] );
+    glLightfv(GL_LIGHT0, GL_AMBIENT, gLight0[0]);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, gLight0[1]);
+    glLightfv(GL_LIGHT0, GL_POSITION, gLight0[2]);
 
     glEnable(GL_LIGHT1);
-    glLightfv(GL_LIGHT1, GL_AMBIENT, gLight1[0] );
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, gLight1[1] );
-    glLightfv(GL_LIGHT1, GL_POSITION, gLight1[2] );
+    glLightfv(GL_LIGHT1, GL_AMBIENT, gLight1[0]);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, gLight1[1]);
+    glLightfv(GL_LIGHT1, GL_POSITION, gLight1[2]);
 
-    mShaderManager.InitializeStockShaders();
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT_AND_BACK);
 
+    mCameraFrame.SetForwardVector(0,0,1);
+    mCameraFrame.SetUpVector(0,1,0);
+    mCameraFrame.SetOrigin(0,0,0);
+    */
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT_AND_BACK);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnableClientState(GLT_ATTRIBUTE_VERTEX);
+    glEnableClientState(GLT_ATTRIBUTE_NORMAL);
+    glEnableClientState(GLT_ATTRIBUTE_TEXTURE0);
+
+    gltMakeSphere(sphereBatch, 1.3f, 15, 15);
 }
 
 void Renderer::resizeGL( int width, int height ){
-	this->resize(width, height);
+    this->resize(width, height);
+    glViewport(0, 0, width, height);
+    mViewFrustum.SetPerspective(35.0f, float(width)/float(height), 2.0f, 500.0f);
+    mProjectionMatrix.LoadMatrix(mViewFrustum.GetProjectionMatrix());
+
+    mTransformPipeline.SetMatrixStacks(mModelViewMatrix,mProjectionMatrix);
 }
 
 void Renderer::resizeGL( QSize pSize ){
-	this->resize(pSize);
+    this->resizeGL(pSize.width(), pSize.height());
 }
 
 Cloud* Renderer::cloud(){
@@ -199,15 +259,17 @@ void Renderer::mouseMoveEvent( QMouseEvent* pEvent) {
 	switch(mButtonPressed) {
 		case Qt::LeftButton : {
 			lTemp = (mMousePos - pEvent->posF())/100.0;
-			mCam[3] += (float)lTemp.x();
-			mCam[4] -= (float)lTemp.y();
+            //mCam[3] += (float)lTemp.x();
+            //mCam[4] -= (float)lTemp.y();
+            mCameraFrame.MoveUp((float)lTemp.y());
+            mCameraFrame.MoveRight((float)lTemp.x());
 
 			mMousePos = pEvent->pos();
 		}	break;
 		case Qt::RightButton  : {
 			lTemp = (mMousePos - pEvent->posF())/10.0;
-			mRot[0] -= (float)lTemp.x();
-			mRot[1] += (float)lTemp.y();
+            //mRot[0] -= (float)lTemp.x();
+            //mRot[1] += (float)lTemp.y();
 		} break;
 	}
 }
@@ -226,6 +288,7 @@ void Renderer::mouseReleaseEvent( QMouseEvent* pEvent ) {
 void Renderer::wheelEvent( QWheelEvent* pEvent ) {
 	pEvent->accept();
         mCam[2] -=(pEvent->delta()/100);
+        mCameraFrame.MoveForward((float)pEvent->delta()/100);
 }
 
 CList_BLob* Renderer::blobList() {
@@ -246,5 +309,4 @@ void Renderer::setTriangleVertexes(const QVector<float>& pVertexs) {
     mGLTriangles.CopyVertexData3f( (GLfloat*)mTriangleVertex.data() );
     // need explications?
     mGLTriangles.End();
-
 }

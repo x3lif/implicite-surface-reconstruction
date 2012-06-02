@@ -25,29 +25,6 @@ double Manhattan_Distance3D (const QVector3D& a, const QVector3D& b)
 	return (x+y+z);
 }
 
-/*QVector3D Middle(QVector3D a, QVector3D b)
-{
-        QVector3D m;
-        m.setX((a.x()+b.x())/2);
-        m.setY((a.y()+b.y())/2);
-        m.setZ((a.z()+b.z())/2);
-	return m;
-}
-
-QVector3D Normal3D(QVector3D a, QVector3D b)
-{
-        QVector3D n;
-        n.setX(a.y()*b.z()-b.y()*a.z());
-        n.setY(a.z()*b.x()-b.z()*a.x());
-        n.setZ(a.x()*b.y()-b.x()*a.y());
-	return n;
-}
-
-double Dot_Product_3D(QVector3D a, QVector3D b)
-{
-        return (a.x()*b.x()+a.y()*b.y()+a.z()*b.z());
-}*/
-
 int Find_Square_Power (int n)
 {
 	int p=0;
@@ -119,11 +96,9 @@ double dMuraki(double r, double R)
 	return(4*r*(r2/R4-1/R2));
 }
 
-double dWywill(double r, double R)
+double dWywill(double /*r*/, double /*R*/)
 {
 	// A FAIRE
-        r = 0;
-        R = 0;
 	return(0);
 }
 
@@ -231,5 +206,115 @@ double theta,phi;
                         phi=phi+(2*M_PI/meridien);
                 }
         glEnd();
-
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Make a sphere
+void gltMakeSphere(GLTriangleBatch& sphereBatch, GLfloat fRadius, GLint iSlices, GLint iStacks, float posX, float posY, float posZ)
+    {
+    GLfloat drho = (GLfloat)(3.141592653589) / (GLfloat) iStacks;
+    GLfloat dtheta = 2.0f * (GLfloat)(3.141592653589) / (GLfloat) iSlices;
+    GLfloat ds = 1.0f / (GLfloat) iSlices;
+    GLfloat dt = 1.0f / (GLfloat) iStacks;
+    GLfloat t = 1.0f;
+    GLfloat s = 0.0f;
+    GLint i, j;     // Looping variables
+
+    sphereBatch.BeginMesh(iSlices * iStacks * 6);
+    for (i = 0; i < iStacks; i++)
+        {
+        GLfloat rho = (GLfloat)i * drho;
+        GLfloat srho = (GLfloat)(sin(rho));
+        GLfloat crho = (GLfloat)(cos(rho));
+        GLfloat srhodrho = (GLfloat)(sin(rho + drho));
+        GLfloat crhodrho = (GLfloat)(cos(rho + drho));
+
+        // Many sources of OpenGL sphere drawing code uses a triangle fan
+        // for the caps of the sphere. This however introduces texturing
+        // artifacts at the poles on some OpenGL implementations
+        s = 0.0f;
+        M3DVector3f vVertex[4];
+        M3DVector3f vNormal[4];
+        M3DVector2f vTexture[4];
+
+        for ( j = 0; j < iSlices; j++)
+            {
+            GLfloat theta = (j == iSlices) ? 0.0f : j * dtheta;
+            GLfloat stheta = (GLfloat)(-sin(theta));
+            GLfloat ctheta = (GLfloat)(cos(theta));
+
+            GLfloat x = stheta * srho;
+            GLfloat y = ctheta * srho;
+            GLfloat z = crho;
+
+            vTexture[0][0] = s;
+            vTexture[0][1] = t;
+            vNormal[0][0] = x;
+            vNormal[0][1] = y;
+            vNormal[0][2] = z;
+            vVertex[0][0] = x * fRadius;
+            vVertex[0][1] = y * fRadius;
+            vVertex[0][2] = z * fRadius;
+
+            x = stheta * srhodrho;
+            y = ctheta * srhodrho;
+            z = crhodrho;
+
+            vTexture[1][0] = s;
+            vTexture[1][1] = t - dt;
+            vNormal[1][0] = x;
+            vNormal[1][1] = y;
+            vNormal[1][2] = z;
+            vVertex[1][0] = x * fRadius;
+            vVertex[1][1] = y * fRadius;
+            vVertex[1][2] = z * fRadius;
+
+
+            theta = ((j+1) == iSlices) ? 0.0f : (j+1) * dtheta;
+            stheta = (GLfloat)(-sin(theta));
+            ctheta = (GLfloat)(cos(theta));
+
+            x = stheta * srho;
+            y = ctheta * srho;
+            z = crho;
+
+            s += ds;
+            vTexture[2][0] = s;
+            vTexture[2][1] = t;
+            vNormal[2][0] = x;
+            vNormal[2][1] = y;
+            vNormal[2][2] = z;
+            vVertex[2][0] = x * fRadius;
+            vVertex[2][1] = y * fRadius;
+            vVertex[2][2] = z * fRadius;
+
+            x = stheta * srhodrho;
+            y = ctheta * srhodrho;
+            z = crhodrho;
+
+            vTexture[3][0] = s;
+            vTexture[3][1] = t - dt;
+            vNormal[3][0] = x;
+            vNormal[3][1] = y;
+            vNormal[3][2] = z;
+            vVertex[3][0] = x * fRadius+posX;
+            vVertex[3][1] = y * fRadius+posY;
+            vVertex[3][2] = z * fRadius+posZ;
+
+            sphereBatch.AddTriangle(vVertex, vNormal, vTexture);
+
+            // Rearrange for next triangle
+            memcpy(vVertex[0], vVertex[1], sizeof(M3DVector3f));
+            memcpy(vNormal[0], vNormal[1], sizeof(M3DVector3f));
+            memcpy(vTexture[0], vTexture[1], sizeof(M3DVector2f));
+
+            memcpy(vVertex[1], vVertex[3], sizeof(M3DVector3f));
+            memcpy(vNormal[1], vNormal[3], sizeof(M3DVector3f));
+            memcpy(vTexture[1], vTexture[3], sizeof(M3DVector2f));
+
+            sphereBatch.AddTriangle(vVertex, vNormal, vTexture);
+            }
+        t -= dt;
+        }
+        sphereBatch.End();
+    }

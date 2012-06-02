@@ -39,20 +39,18 @@ Cloud::Cloud( QString& pFile ){
 	}
         qWarning()<<mPointList.size()<<mNbPoints;
 
+        glPointSize(5.0f);
         mGLBatch.Begin(GL_POINTS, mNbPoints);
-        mGLBatch.CopyVertexData3f( mPointList.data() );
+        for(int i=0;i<mNbPoints;i++)
+        {
+            mGLBatch.Vertex3f(mPointList[i*3],mPointList[i*3+1], mPointList[i*3+2]);
+        }
         mGLBatch.End();
 
 }
 
 Cloud::Cloud(QVector<QVector3D>& pCloud) {
     mNbPoints = pCloud.size();
-
-    /*QVectorIterator<QVector3D> lIte( pCloud );
-    while( lIte.hasNext() ) {
-        const QVector3D& lPoint = lIte.next();
-        mPointList<<lPoint.x()<<lPoint.y()<<lPoint.z();
-    }*/
     for(int i=0;i<pCloud.size();++i)
     {
         const QVector3D& lTemp = pCloud.at(i);
@@ -67,18 +65,8 @@ Cloud::~Cloud() {
 void Cloud::Draw() {
 	if(mNbPoints == 0)	return;
 
-        glDisable(GL_LIGHTING);
-
-        /*glEnableClientState(GL_VERTEX_ARRAY);
-	glColor3f(1.0f,0.0f,0.0f);
-	glVertexPointer(3, GL_FLOAT, 0, mPointList.data());
-	glDrawArrays(GL_POINTS, 0, mNbPoints);
-        glDisableClientState(GL_VERTEX_ARRAY);*/
-
-        glColor3f(1.0f,0.0f,0.0f);
-        mGLBatch.Draw();
-
-        glEnable(GL_LIGHTING);
+    glColor3f(1.0f,0.0f,0.0f);
+    mGLBatch.Draw();
 }
 
 
@@ -88,7 +76,8 @@ int Cloud::getNbPoints() {
 
 QVector<QVector3D> Cloud::getPoints(){
 	QVector<QVector3D> lResult;
-	for(int i=0; i<mNbPoints*3; i+=3) {
+    for(int i=0; i<mNbPoints*3; i+=3)
+    {
 		lResult << QVector3D(mPointList[i],mPointList[i+1], mPointList[i+2]);
 	}
 	return lResult;
@@ -119,3 +108,8 @@ CVoxel_8 Cloud::boundingBox() {
 	Bounding_Box.Put_Vertex(7,xmin,ymax,zmax);
 	return Bounding_Box;
 }
+
+ const QVector<float>& Cloud::getFloatsList() const
+ {
+     return mPointList;
+ }

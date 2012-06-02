@@ -17,6 +17,11 @@
 #include "octree.h"
 #include "blob.h"
 #include "triangle.h"
+#include <math3d.h>
+#include <GLFrame.h>
+#include <GLGeometryTransform.h>
+#include <GLMatrixStack.h>
+#include <GLFrustum.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
@@ -84,6 +89,16 @@ private:
         GLShaderManager mShaderManager;
         QVector<float> mTriangleVertex;
         GLBatch     mGLTriangles;
+        GLFrame     mCameraFrame;
+        GLGeometryTransform mTransformPipeline;
+
+        GLMatrixStack mModelViewMatrix;
+        GLMatrixStack mProjectionMatrix;
+        GLFrustum mViewFrustum;
+
+        GLBatch				floorBatch;
+        GLBatch             mCloudBatch;
+        GLTriangleBatch     sphereBatch;
 };
 
 #endif /* RENDERER_H_ */
