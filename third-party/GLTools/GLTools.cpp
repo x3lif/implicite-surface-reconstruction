@@ -612,157 +612,157 @@ void gltMakeCube(GLBatch& cubeBatch, GLfloat fRadius )
             
     /////////////////////////////////////////////
     // Top of cube
-    cubeBatch.Normal3f(0.0f, fRadius, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(0.0f, 1.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(fRadius, fRadius, fRadius);
     
-    cubeBatch.Normal3f(0.0f, fRadius, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, 0.0f);
+    cubeBatch.Normal3f(0.0f, 1.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
     cubeBatch.Vertex3f(fRadius, fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, fRadius, 0.0f);
+    cubeBatch.Normal3f(0.0f, 1.0f, 0.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, fRadius, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(0.0f, 1.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(fRadius, fRadius, fRadius);
     
-    cubeBatch.Normal3f(0.0f, fRadius, 0.0f);
+    cubeBatch.Normal3f(0.0f, 1.0f, 0.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, fRadius, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, 0.0f, fRadius);
+    cubeBatch.Normal3f(0.0f, 1.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, fRadius);
     
     
     ////////////////////////////////////////////
     // Bottom of cube
-    cubeBatch.Normal3f(0.0f, -fRadius, 0.0f);
+    cubeBatch.Normal3f(0.0f, -1.0f, 0.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(-fRadius, -fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, -fRadius, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, 0.0f);
+    cubeBatch.Normal3f(0.0f, -1.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
     cubeBatch.Vertex3f(fRadius, -fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, -fRadius, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(0.0f, -1.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(fRadius, -fRadius, fRadius);
     
-    cubeBatch.Normal3f(0.0f, -fRadius, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, 0.0f, fRadius);
+    cubeBatch.Normal3f(0.0f, -1.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
     cubeBatch.Vertex3f(-fRadius, -fRadius, fRadius);
     
-    cubeBatch.Normal3f(0.0f, -fRadius, 0.0f);
+    cubeBatch.Normal3f(0.0f, -1.0f, 0.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(-fRadius, -fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, -fRadius, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(0.0f, -1.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(fRadius, -fRadius, fRadius);
     
     ///////////////////////////////////////////
     // Left side of cube
-    cubeBatch.Normal3f(-fRadius, 0.0f, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(-1.0f, 0.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, fRadius);
     
-    cubeBatch.Normal3f(-fRadius, 0.0f, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, 0.0f);
+    cubeBatch.Normal3f(-1.0f, 0.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, -fRadius);
     
-    cubeBatch.Normal3f(-fRadius, 0.0f, 0.0f);
+    cubeBatch.Normal3f(-1.0f, 0.0f, 0.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(-fRadius, -fRadius, -fRadius);
     
-    cubeBatch.Normal3f(-fRadius, 0.0f, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(-1.0f, 0.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, fRadius);
     
-    cubeBatch.Normal3f(-fRadius, 0.0f, 0.0f);
+    cubeBatch.Normal3f(-1.0f, 0.0f, 0.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(-fRadius, -fRadius, -fRadius);
     
-    cubeBatch.Normal3f(-fRadius, 0.0f, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, 0.0f, fRadius);
+    cubeBatch.Normal3f(-1.0f, 0.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
     cubeBatch.Vertex3f(-fRadius, -fRadius, fRadius);
     
     // Right side of cube
-    cubeBatch.Normal3f(fRadius, 0.0f, 0.0f);
+    cubeBatch.Normal3f(1.0f, 0.0f, 0.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(fRadius, -fRadius, -fRadius);
     
-    cubeBatch.Normal3f(fRadius, 0.0f, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, 0.0f);
+    cubeBatch.Normal3f(1.0f, 0.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
     cubeBatch.Vertex3f(fRadius, fRadius, -fRadius);
     
-    cubeBatch.Normal3f(fRadius, 0.0f, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(1.0f, 0.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(fRadius, fRadius, fRadius);
     
-    cubeBatch.Normal3f(fRadius, 0.0f, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(1.0f, 0.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(fRadius, fRadius, fRadius);
     
-    cubeBatch.Normal3f(fRadius, 0.0f, 0.0f);
-    cubeBatch.MultiTexCoord2f(0, 0.0f, fRadius);
+    cubeBatch.Normal3f(1.0f, 0.0f, 0.0f);
+    cubeBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
     cubeBatch.Vertex3f(fRadius, -fRadius, fRadius);
     
-    cubeBatch.Normal3f(fRadius, 0.0f, 0.0f);
+    cubeBatch.Normal3f(1.0f, 0.0f, 0.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(fRadius, -fRadius, -fRadius);
     
     // Front and Back
     // Front
-    cubeBatch.Normal3f(0.0f, 0.0f, fRadius);
-    cubeBatch.MultiTexCoord2f(0, fRadius, 0.0f);
+    cubeBatch.Normal3f(0.0f, 0.0f, 1.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
     cubeBatch.Vertex3f(fRadius, -fRadius, fRadius);
     
-    cubeBatch.Normal3f(0.0f, 0.0f, fRadius);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(0.0f, 0.0f, 1.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(fRadius, fRadius, fRadius);
     
-    cubeBatch.Normal3f(0.0f, 0.0f, fRadius);
-    cubeBatch.MultiTexCoord2f(0, 0.0f, fRadius);
+    cubeBatch.Normal3f(0.0f, 0.0f, 1.0f);
+    cubeBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, fRadius);
     
-    cubeBatch.Normal3f(0.0f, 0.0f, fRadius);
-    cubeBatch.MultiTexCoord2f(0, 0.0f, fRadius);
+    cubeBatch.Normal3f(0.0f, 0.0f, 1.0f);
+    cubeBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, fRadius);
     
-    cubeBatch.Normal3f(0.0f, 0.0f, fRadius);
+    cubeBatch.Normal3f(0.0f, 0.0f, 1.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(-fRadius, -fRadius, fRadius);
     
-    cubeBatch.Normal3f(0.0f, 0.0f, fRadius);
-    cubeBatch.MultiTexCoord2f(0, fRadius, 0.0f);
+    cubeBatch.Normal3f(0.0f, 0.0f, 1.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
     cubeBatch.Vertex3f(fRadius, -fRadius, fRadius);
     
     // Back
-    cubeBatch.Normal3f(0.0f, 0.0f, -fRadius);
-    cubeBatch.MultiTexCoord2f(0, fRadius, 0.0f);
+    cubeBatch.Normal3f(0.0f, 0.0f, -1.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
     cubeBatch.Vertex3f(fRadius, -fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, 0.0f, -fRadius);
+    cubeBatch.Normal3f(0.0f, 0.0f, -1.0f);
     cubeBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
     cubeBatch.Vertex3f(-fRadius, -fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, 0.0f, -fRadius);
-    cubeBatch.MultiTexCoord2f(0, 0.0f, fRadius);
+    cubeBatch.Normal3f(0.0f, 0.0f, -1.0f);
+    cubeBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, 0.0f, -fRadius);
-    cubeBatch.MultiTexCoord2f(0, 0.0f, fRadius);
+    cubeBatch.Normal3f(0.0f, 0.0f, -1.0f);
+    cubeBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
     cubeBatch.Vertex3f(-fRadius, fRadius, -fRadius);
     
-    cubeBatch.Normal3f(0.0f, 0.0f, -fRadius);
-    cubeBatch.MultiTexCoord2f(0, fRadius, fRadius);
+    cubeBatch.Normal3f(0.0f, 0.0f, -1.0f);
+    cubeBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
     cubeBatch.Vertex3f(fRadius, fRadius, -fRadius);
 
-	cubeBatch.Normal3f(0.0f, 0.0f, -fRadius);
-	cubeBatch.MultiTexCoord2f(0, fRadius, 0.0f);
+	cubeBatch.Normal3f(0.0f, 0.0f, -1.0f);
+	cubeBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
 	cubeBatch.Vertex3f(fRadius, -fRadius, -fRadius);   
     cubeBatch.End();
 	}	
@@ -884,7 +884,9 @@ GLint gltGrabScreenTGA(const char *szFileName)
 // Call free() on buffer when finished!
 // This only works on pretty vanilla targas... 8, 24, or 32 bit color
 // only, no palettes, no RLE encoding.
-GLbyte *gltReadTGABits(const char *szFileName, GLint *iWidth, GLint *iHeight, GLint *iComponents, GLenum *eFormat)
+// This function also takes an optional final parameter to preallocated 
+// storage for loading in the image data.
+GLbyte *gltReadTGABits(const char *szFileName, GLint *iWidth, GLint *iHeight, GLint *iComponents, GLenum *eFormat, GLbyte *pData)
 	{
     FILE *pFile;			// File pointer
     TGAHEADER tgaHeader;		// TGA file header
@@ -931,16 +933,18 @@ GLbyte *gltReadTGABits(const char *szFileName, GLint *iWidth, GLint *iHeight, GL
     lImageSize = tgaHeader.width * tgaHeader.height * sDepth;
     
     // Allocate memory and check for success
-    pBits = (GLbyte*)malloc(lImageSize * sizeof(GLbyte));
-    if(pBits == NULL)
-        return NULL;
-    
+    if(pData == NULL) 
+        pBits = (GLbyte*)malloc(lImageSize * sizeof(GLbyte));
+    else 
+        pBits = pData; 
+
     // Read in the bits
     // Check for read error. This should catch RLE or other 
     // weird formats that I don't want to recognize
     if(fread(pBits, lImageSize, 1, pFile) != 1)
 		{
-        free(pBits);
+        if(pBits != NULL)
+            free(pBits);
         return NULL;
 		}
     
@@ -977,8 +981,6 @@ GLbyte *gltReadTGABits(const char *szFileName, GLint *iWidth, GLint *iHeight, GL
         break;
 		}
 	
-    
-    
     // Done with File
     fclose(pFile);
 	
@@ -1079,7 +1081,7 @@ GLbyte* gltReadBMPBits(const char *szFileName, int *nWidth, int *nHeight)
 	free(pBitmapInfo);
 	pBits = (GLbyte*)malloc(sizeof(GLbyte)*lBitSize);
 
-	// Read in the bitmap bits, check for corruption
+	// Read in the pixmap bits, check for corruption
 	if(fread(pBits, lBitSize, 1, pFile) != 1)
 		{
 		free(pBits);
@@ -1158,6 +1160,115 @@ bool gltLoadShaderFile(const char *szFile, GLuint shader)
     return true;
 	}   
 
+/////////////////////////////////////////////////////////////////
+// Load a pair of shaders, compile, and link together. Specify the complete
+// source text for each shader. After the shader names, specify the number
+// of attributes, followed by the index and attribute name of each attribute
+#ifndef OPENGL_ES
+GLuint gltLoadShaderTripletWithAttributes(const char *szVertexShader,
+                                          const char *szGeometryShader,
+                                          const char *szFragmentShader, ...)
+{
+    // Temporary Shader objects
+    GLuint hVertexShader = 0;
+    GLuint hGeometryShader = 0;
+    GLuint hFragmentShader = 0;
+    GLuint hReturn = 0;
+    GLint testVal;
+	int iArgCount;
+    va_list attributeList;
+    char *szNextArg = NULL;
+    char infoLog[1024];
+
+    // Create shader objects
+    hVertexShader = glCreateShader(GL_VERTEX_SHADER);
+    if (gltLoadShaderFile(szVertexShader, hVertexShader) == false)
+        goto failed;
+    glCompileShader(hVertexShader);
+    glGetShaderiv(hVertexShader, GL_COMPILE_STATUS, &testVal);
+    if  (testVal == GL_FALSE) {
+        glGetShaderInfoLog(hVertexShader, 1024, NULL, infoLog);
+        goto failed;
+    }
+
+    // Geometry shader is optional
+    if (szGeometryShader) {
+        hGeometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+        if(gltLoadShaderFile(szGeometryShader, hGeometryShader) == false)
+            goto failed;
+        glCompileShader(hGeometryShader);
+        glGetShaderiv(hGeometryShader, GL_COMPILE_STATUS, &testVal);
+        if  (testVal == GL_FALSE) {
+            glGetShaderInfoLog(hGeometryShader, 1024, NULL, infoLog);
+            goto failed;
+        }
+    }
+
+    // Fragment shader is optional (transform feedback only)
+    if (szFragmentShader) {
+        hFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+        if (gltLoadShaderFile(szFragmentShader, hFragmentShader) == false)
+            goto failed;
+        glCompileShader(hFragmentShader);
+        glGetShaderiv(hFragmentShader, GL_COMPILE_STATUS, &testVal);
+        if  (testVal == GL_FALSE) {
+            glGetShaderInfoLog(hFragmentShader, 1024, NULL, infoLog);
+            goto failed;
+        }
+    }
+
+    // Create the final program object, and attach the shaders
+    hReturn = glCreateProgram();
+    glAttachShader(hReturn, hVertexShader);
+    if (szGeometryShader)
+        glAttachShader(hReturn, hGeometryShader);
+    if (szFragmentShader)
+        glAttachShader(hReturn, hFragmentShader);
+
+    // Now, we need to bind the attribute names to their specific locations
+    // List of attributes
+    va_start(attributeList, szFragmentShader);
+
+    // Iterate over this argument list
+    iArgCount = va_arg(attributeList, int);	// Number of attributes
+    for(int i = 0; i < iArgCount; i++)
+    {
+        int index = va_arg(attributeList, int);
+        szNextArg = va_arg(attributeList, char*);
+        glBindAttribLocation(hReturn, index, szNextArg);
+    }
+    va_end(attributeList);
+
+    // Attempt to link    
+    glLinkProgram(hReturn);
+
+    // These are no longer needed
+    glDeleteShader(hVertexShader);
+    glDeleteShader(hGeometryShader);
+    glDeleteShader(hFragmentShader);
+
+    // Make sure link worked too
+    glGetProgramiv(hReturn, GL_LINK_STATUS, &testVal);
+    if(testVal == GL_FALSE) {
+        char infoLog[1024];
+        glGetProgramInfoLog(hReturn, 1024, NULL, infoLog);
+        fprintf(stderr, infoLog);
+        goto failed;
+    }
+
+    // All done, return our ready to use shader program
+    return hReturn;
+
+failed:
+
+    glDeleteProgram(hReturn);
+    glDeleteShader(hFragmentShader);
+    glDeleteShader(hGeometryShader);
+    glDeleteShader(hVertexShader);
+
+    return 0;
+}
+#endif
 
 /////////////////////////////////////////////////////////////////
 // Load a pair of shaders, compile, and link together. Specify the complete
@@ -1340,6 +1451,85 @@ GLuint gltLoadShaderPair(const char *szVertexProg, const char *szFragmentProg)
     
     return hReturn;  
 	}   
+
+/////////////////////////////////////////////////////////////////
+// Load a set of shaders, compile, and link together. Specify the complete
+// file path for each shader. Note, there is no support for
+// just loading say a vertex program... you have to do all.
+#ifndef OPENGL_ES
+GLuint gltLoadShaderTripletSrc(const char *szVertexSrc,
+                               const char *szGeometrySrc,
+                               const char *szFragmentSrc)
+	{
+    // Temporary Shader objects
+    GLuint hVertexShader = 0;
+    GLuint hGeometryShader = 0;
+    GLuint hFragmentShader = 0;
+    GLuint hReturn = 0;   
+    GLint testVal;
+	
+    // Create shader objects, load and compile them
+    hVertexShader = glCreateShader(GL_VERTEX_SHADER);
+    gltLoadShaderSrc(szVertexSrc, hVertexShader);
+    glCompileShader(hVertexShader);
+    if (szGeometrySrc) {
+        hGeometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+        gltLoadShaderSrc(szGeometrySrc, hFragmentShader);
+        glCompileShader(hGeometryShader);
+    }
+    hFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    gltLoadShaderSrc(szFragmentSrc, hFragmentShader);
+    glCompileShader(hFragmentShader);
+
+    // Check for errors
+    glGetShaderiv(hVertexShader, GL_COMPILE_STATUS, &testVal);
+    if(testVal == GL_FALSE) {
+        goto failed;
+    }
+
+    if (szGeometrySrc) {
+        glGetShaderiv(hGeometryShader, GL_COMPILE_STATUS, &testVal);
+        if(testVal == GL_FALSE) {
+            goto failed;
+        }
+    }
+
+    glGetShaderiv(hFragmentShader, GL_COMPILE_STATUS, &testVal);
+    if(testVal == GL_FALSE) {
+        goto failed;
+    }
+
+    // Link them - assuming it works...
+    hReturn = glCreateProgram();
+    glAttachShader(hReturn, hVertexShader);
+    if (szGeometrySrc)
+        glAttachShader(hReturn, hGeometryShader);
+    glAttachShader(hReturn, hFragmentShader);
+    glLinkProgram(hReturn);
+
+    // These are no longer needed
+    glDeleteShader(hVertexShader);
+    glDeleteShader(hGeometryShader);
+    glDeleteShader(hFragmentShader);
+
+    // Make sure link worked too
+    glGetProgramiv(hReturn, GL_LINK_STATUS, &testVal);
+    if(testVal == GL_FALSE) {
+        goto failed;
+    }
+
+    return hReturn;
+
+failed:
+
+    glDeleteProgram(hReturn);
+    glDeleteShader(hFragmentShader);
+    glDeleteShader(hGeometryShader);
+    glDeleteShader(hVertexShader);
+
+    return 0;
+}
+#endif
 
 /////////////////////////////////////////////////////////////////
 // Load a pair of shaders, compile, and link together. Specify the complete

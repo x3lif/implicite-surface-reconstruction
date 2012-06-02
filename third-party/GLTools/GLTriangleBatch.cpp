@@ -236,7 +236,7 @@ void GLTriangleBatch::End(void)
 
 //////////////////////////////////////////////////////////////////////////
 // Draw - make sure you call glEnableClientState for these arrays
-void GLTriangleBatch::Draw(void) 
+void GLTriangleBatch::Draw(void) const
 	{
     #ifndef OPENGL_ES
 	glBindVertexArray(vertexArrayBufferObject);
@@ -264,7 +264,7 @@ void GLTriangleBatch::Draw(void)
     
     #ifndef OPENGL_ES
     // Unbind to anybody
-	glBindVertexArray(vertexArrayBufferObject);
+	glBindVertexArray(0);
     #else
     glDisableVertexAttribArray(GLT_ATTRIBUTE_VERTEX);
     glDisableVertexAttribArray(GLT_ATTRIBUTE_NORMAL);

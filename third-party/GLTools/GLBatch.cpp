@@ -459,7 +459,7 @@ void GLBatch::MultiTexCoord2fv(GLuint texture, M3DVector2f vTexCoord)
 	}
 
 
-void GLBatch::Draw(void)
+void GLBatch::Draw(void) const
 	{
 	if(!bBatchDone)
 		return;

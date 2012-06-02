@@ -154,7 +154,7 @@ GLbyte* gltReadBMPBits(const char *szFileName, int *nWidth, int *nHeight);
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Load a .TGA file
-GLbyte *gltReadTGABits(const char *szFileName, GLint *iWidth, GLint *iHeight, GLint *iComponents, GLenum *eFormat);
+GLbyte *gltReadTGABits(const char *szFileName, GLint *iWidth, GLint *iHeight, GLint *iComponents, GLenum *eFormat, GLbyte *pData = NULL);
 
 // Capture the frame buffer and write it as a .tga
 // Does not work on the iPhone
@@ -176,6 +176,16 @@ bool	gltLoadShaderFile(const char *szFile, GLuint shader);
 
 GLuint	gltLoadShaderPair(const char *szVertexProg, const char *szFragmentProg);
 GLuint   gltLoadShaderPairWithAttributes(const char *szVertexProg, const char *szFragmentProg, ...);
+
+#ifndef OPENGL_ES
+GLuint gltLoadShaderTripletSrc(const char *szVertexSrc,
+                               const char *szGeometrySrc,
+                               const char *szFragmentSrc);
+
+GLuint gltLoadShaderTripletWithAttributes(const char *szVertexShader,
+                                          const char *szGeometryShader,
+                                          const char *szFragmentShader, ...);
+#endif
 
 GLuint gltLoadShaderPairSrc(const char *szVertexSrc, const char *szFragmentSrc);
 GLuint gltLoadShaderPairSrcWithAttributes(const char *szVertexProg, const char *szFragmentProg, ...);

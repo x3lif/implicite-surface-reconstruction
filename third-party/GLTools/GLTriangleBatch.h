@@ -103,7 +103,7 @@ class GLTriangleBatch : public GLBatchBase
 
         
         // Draw - make sure you call glEnableClientState for these arrays
-        virtual void Draw(void);
+        virtual void Draw(void) const;
         
     protected:
         GLushort  *pIndexes;        // Array of indexes

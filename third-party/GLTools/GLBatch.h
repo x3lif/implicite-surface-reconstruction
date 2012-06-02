@@ -91,7 +91,7 @@ class GLBatch : public GLBatchBase
 		inline void CopyColorData4f(GLfloat *vColors) { CopyColorData4f((M3DVector4f *)(vColors)); }
 		inline void CopyTexCoordData2f(GLfloat *vTex, GLuint uiTextureLayer) { CopyTexCoordData2f((M3DVector2f *)(vTex), uiTextureLayer); }
 
-		virtual void Draw(void);
+        virtual void Draw(void) const;
  
 		// Immediate mode emulation
 		// Slowest way to build an array on purpose... Use the above if you can instead

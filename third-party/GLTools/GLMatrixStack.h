@@ -36,6 +36,7 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF S
 #include <math3d.h>
 #include <GLFrame.h>
 
+
 enum GLT_STACK_ERROR { GLT_STACK_NOERROR = 0, GLT_STACK_OVERFLOW, GLT_STACK_UNDERFLOW }; 
 
 class GLMatrixStack
@@ -82,7 +83,7 @@ class GLMatrixStack
             }
             				
 		inline void PushMatrix(void) {
-			if(stackPointer < stackDepth) {
+			if(stackPointer < (stackDepth-1)) {
 				stackPointer++;
 				m3dCopyMatrix44(pStack[stackPointer], pStack[stackPointer-1]);
 				}
@@ -111,7 +112,7 @@ class GLMatrixStack
 			m3dCopyMatrix44(mTemp, pStack[stackPointer]);
 			m3dMatrixMultiply44(pStack[stackPointer], mTemp, mScale);			
 			}
-			
+            			
 		void Rotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z) {
 			M3DMatrix44f mTemp, mRotate;
 			m3dRotationMatrix44(mRotate, float(m3dDegToRad(angle)), x, y, z);
@@ -128,15 +129,14 @@ class GLMatrixStack
 			m3dMatrixMultiply44(pStack[stackPointer], mTemp, mScale);
 			}
 			
-			
 		void Translatev(const M3DVector3f vTranslate) {
 			M3DMatrix44f mTemp, mTranslate;
 			m3dLoadIdentity44(mTranslate);
-			m3dSetMatrixColumn44(mTranslate, vTranslate, 3);
+            memcpy(&mTranslate[12], vTranslate, sizeof(GLfloat) * 3);
 			m3dCopyMatrix44(mTemp, pStack[stackPointer]);
 			m3dMatrixMultiply44(pStack[stackPointer], mTemp, mTranslate);
-			}
-			
+        }
+        
 			
 		void Rotatev(GLfloat angle, M3DVector3f vAxis) {
 			M3DMatrix44f mTemp, mRotation;
