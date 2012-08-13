@@ -252,9 +252,9 @@ void gltMakeSphere(GLTriangleBatch& sphereBatch, GLfloat fRadius, GLint iSlices,
             vNormal[0][0] = x;
             vNormal[0][1] = y;
             vNormal[0][2] = z;
-            vVertex[0][0] = x * fRadius;
-            vVertex[0][1] = y * fRadius;
-            vVertex[0][2] = z * fRadius;
+            vVertex[0][0] = x * fRadius + posX;
+            vVertex[0][1] = y * fRadius + posY;
+            vVertex[0][2] = z * fRadius + posZ;
 
             x = stheta * srhodrho;
             y = ctheta * srhodrho;
@@ -265,9 +265,9 @@ void gltMakeSphere(GLTriangleBatch& sphereBatch, GLfloat fRadius, GLint iSlices,
             vNormal[1][0] = x;
             vNormal[1][1] = y;
             vNormal[1][2] = z;
-            vVertex[1][0] = x * fRadius;
-            vVertex[1][1] = y * fRadius;
-            vVertex[1][2] = z * fRadius;
+            vVertex[1][0] = x * fRadius + posX;
+            vVertex[1][1] = y * fRadius + posY;
+            vVertex[1][2] = z * fRadius + posZ;
 
 
             theta = ((j+1) == iSlices) ? 0.0f : (j+1) * dtheta;
@@ -284,9 +284,9 @@ void gltMakeSphere(GLTriangleBatch& sphereBatch, GLfloat fRadius, GLint iSlices,
             vNormal[2][0] = x;
             vNormal[2][1] = y;
             vNormal[2][2] = z;
-            vVertex[2][0] = x * fRadius;
-            vVertex[2][1] = y * fRadius;
-            vVertex[2][2] = z * fRadius;
+            vVertex[2][0] = x * fRadius + posX;
+            vVertex[2][1] = y * fRadius + posY;
+            vVertex[2][2] = z * fRadius + posZ;
 
             x = stheta * srhodrho;
             y = ctheta * srhodrho;
@@ -297,9 +297,9 @@ void gltMakeSphere(GLTriangleBatch& sphereBatch, GLfloat fRadius, GLint iSlices,
             vNormal[3][0] = x;
             vNormal[3][1] = y;
             vNormal[3][2] = z;
-            vVertex[3][0] = x * fRadius+posX;
-            vVertex[3][1] = y * fRadius+posY;
-            vVertex[3][2] = z * fRadius+posZ;
+            vVertex[3][0] = x * fRadius + posX;
+            vVertex[3][1] = y * fRadius + posY;
+            vVertex[3][2] = z * fRadius + posZ;
 
             sphereBatch.AddTriangle(vVertex, vNormal, vTexture);
 

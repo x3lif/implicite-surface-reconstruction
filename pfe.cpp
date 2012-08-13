@@ -51,7 +51,7 @@ PFE::~PFE()
 }
 
 void PFE::openFileDialog() {
-        static QString sPath = "../implicite-surface-reconstruction/samples";
+        static QString sPath = "./implicite-surface-reconstruction/samples";
 	QString lFile = QFileDialog::getOpenFileName(this, "select a file", sPath);
 	mRenderer->openCloudFile(lFile);
 }

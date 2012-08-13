@@ -31,7 +31,9 @@ HEADERS += utils.h \
     ./third-party/GLTools/GLFrame.h \
     ./third-party/GLTools/GLGeometryTransform.h \
     ./third-party/GLTools/GLMatrixStack.h   \
-    ./third-party/GLTools/GLFrustum.h
+    ./third-party/GLTools/GLFrustum.h \
+    ./third-party/GLTools/math3d.h
+
 
 SOURCES += utils.cpp \
     voxel.cpp \
@@ -47,7 +49,7 @@ SOURCES += utils.cpp \
     ./third-party/GLTools/GLBatch.cpp \
     ./third-party/GLTools/GLTriangleBatch.cpp \
     ./third-party/GLTools/GLShaderManager.cpp \
-    ./third-party/GLTools/math3D.cpp
+    ./third-party/GLTools/math3d.cpp
 
 FORMS += pfe.ui
 RESOURCES += 

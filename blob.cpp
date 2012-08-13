@@ -30,7 +30,6 @@ int CBlob::type(){
 //constructeur
 CBlob_Spherical::CBlob_Spherical(void)
 {	
-    qWarning()<<__func__;
         mCenter.setX(0);mCenter.setY(0);mCenter.setZ(0);
         mRadius=1.0;mInfParam=1.0;mTypeFunction=1;
         mColor.setRedF(0.50);mColor.setGreenF(0.40);mColor.setBlue(0.70);mColor.setAlphaF(1.0);
@@ -42,15 +41,15 @@ CBlob_Spherical::CBlob_Spherical(void)
 //Constructeur
 CBlob_Spherical::CBlob_Spherical(QVector3D pCenter, double pRadius, double pInfParam, int pTypeFunction, QColor pColor)
 {
-    qWarning()<<__func__<<mCenter.x()<<mCenter.y()<<mCenter.z();
     mCenter = pCenter;
     mRadius = pRadius;
     mInfParam = pInfParam;
     mTypeFunction = pTypeFunction;
     mColor = pColor;
-    gltMakeSphere(mThresholdBatch, mRadius, 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
+    //mFrame.SetOrigin(mCenter.x(), mCenter.y(), mCenter.z());
+    gltMakeSphere(mThresholdBatch, mRadius, 15, 15 , mCenter.x(), mCenter.y(), mCenter.z());
     gltMakeSphere(mInfluenceBatch, mRadius*mInfParam, 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
-    mFrame.SetOrigin(mCenter.x(), mCenter.y(), mCenter.z());
+
 }
 
 //destructeur
@@ -100,7 +99,6 @@ const QColor& CBlob_Spherical::getColor(void) const
 //position du centre du blob
 void CBlob_Spherical::setCenter(QVector3D c)
 {
-    qWarning()<<__func__;
         mCenter=c;
        mFrame.SetOrigin(mCenter.x(), mCenter.y(), mCenter.z());
 }
@@ -108,25 +106,24 @@ void CBlob_Spherical::setCenter(QVector3D c)
 //rayon du bob
 void CBlob_Spherical::setRadius(double r)
 {
-    qWarning()<<__func__;
     mRadius=r;
-    gltMakeSphere(mThresholdBatch, mRadius, 15, 15);
-    gltMakeSphere(mInfluenceBatch, mRadius*mInfParam, 15, 15);
+    gltMakeSphere(mThresholdBatch, mRadius, 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
+    gltMakeSphere(mInfluenceBatch, mRadius*sqrt(1.0-sqrt(mInfParam)), 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
 }
 
 void CBlob_Spherical::setInfParam(double i)
 {
-    qWarning()<<__func__;
-        mInfParam=i;
-        gltMakeSphere(mThresholdBatch, mRadius, 15, 15);
-        gltMakeSphere(mInfluenceBatch, mRadius*mInfParam, 15, 15);
+    mInfParam = i;
+    mThreshold = i;
+    gltMakeSphere(mThresholdBatch, mRadius, 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
+    gltMakeSphere(mInfluenceBatch, mRadius*sqrt(1.0-sqrt(mInfParam)), 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
 }
 
 void CBlob_Spherical::setThreshold(double t) {
-    qWarning()<<__func__<<mCenter.x()<<mCenter.y()<<mCenter.z();
     mThreshold = t;
-    gltMakeSphere(mThresholdBatch, mRadius, 15, 15);
-    gltMakeSphere(mInfluenceBatch, mRadius*mInfParam, 15, 15);
+    mInfParam = t;
+    gltMakeSphere(mThresholdBatch, mRadius, 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
+    gltMakeSphere(mInfluenceBatch, mRadius*sqrt(1.0-sqrt(mInfParam)), 15, 15, mCenter.x(), mCenter.y(), mCenter.z());
 }
 
 //fonction pour creation du blob
@@ -165,6 +162,7 @@ void CBlob_Spherical::Blob_Info(void) const
 {
         qWarning()<<"Centre : "<<mCenter;
         qWarning()<<"Rayon : "<<mRadius <<"- Influence : "<<mInfParam;
+        qWarning()<<"Thresold :"<<mThreshold;
         qWarning()<<"Couleur :"<<mColor;
 }
 
@@ -247,7 +245,6 @@ void CBlob_Spherical::drawInfluence() const
 void CBlob_Spherical::drawThreshold() const {
     //float lRadius = mRadius*(sqrt(1-sqrt(mThreshold)));
     //drawSpherical( 15, 15, lRadius );
-    qWarning()<<"Drawing blob !";
     mThresholdBatch.Draw();
 }
 
@@ -296,6 +293,7 @@ CBlob_Spherical* CBlob_Spherical::clone() const
         CBlob_Spherical *lNewBlob = new CBlob_Spherical(mCenter, mRadius, mInfParam, mTypeReconstruction, mColor);
         // TODO : useless method?
         lNewBlob->setTypeReconstruction(mTypeReconstruction);
+        lNewBlob->setThreshold(mThreshold);
         return lNewBlob;
 }
 

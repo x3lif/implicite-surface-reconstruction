@@ -60,6 +60,41 @@ void Renderer::openCloudFile(QString& pPath) {
 
 void Renderer::paintGL() {
 
+
+    // Color values
+    /*   static GLfloat vFloorColor[] = { 0.0f, 1.0f, 0.0f, 1.0f};
+       static GLfloat vTorusColor[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+
+       // Time Based animation
+       static float yRot = 0;
+       yRot += 0.016 * 60.0f;
+
+       // Clear the color and depth buffers
+       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+       // Save the current modelview matrix (the identity matrix)
+       modelViewMatrix.PushMatrix();
+
+       // Draw the ground
+       mShaderManager.UseStockShader(GLT_SHADER_FLAT,
+                                    mTransformPipeline.GetModelViewProjectionMatrix(),
+                                    vFloorColor);
+       floorBatch.Draw();
+
+       // Draw the spinning Torus
+       modelViewMatrix.Translate(0.0f, 0.0f, -2.5f);
+       modelViewMatrix.Rotate(yRot, 0.0f, 1.0f, 0.0f);
+       mShaderManager.UseStockShader(GLT_SHADER_FLAT, mTransformPipeline.GetModelViewProjectionMatrix(),
+                                   vTorusColor);
+       torusBatch.Draw();
+       sphereBatch.Draw();
+
+       // Restore the previous modleview matrix (the idenity matrix)
+       modelViewMatrix.PopMatrix();
+      */
+
+
         QTime lTime;
         lTime.start();
 
@@ -73,33 +108,37 @@ void Renderer::paintGL() {
 
      //glMatrixMode( GL_MODELVIEW );
      //glLoadIdentity();
-     /*gluLookAt(	mCam[0], mCam[1], mCam[2],
-				mCam[3], mCam[4], mCam[5],
-                mCam[6], mCam[7], mCam[8]);
-      */
+//   gluLookAt(	mCam[0], mCam[1], mCam[2],
+//				mCam[3], mCam[4], mCam[5],
+//              mCam[6], mCam[7], mCam[8]);
+//
 
      //glRotatef( mRot[0], 0.0f, 0.0f, 1.0f );
      //glRotatef( mRot[1], 1.0f, 0.0f, 0.0f );
-     mModelViewMatrix.PushMatrix();
+     modelViewMatrix.PushMatrix();
 
-/*     mShaderManager.UseStockShader(GLT_SHADER_FLAT,
-                                      mTransformPipeline.GetModelViewProjectionMatrix(),
-                                      lColor);
-*/
+//     mShaderManager.UseStockShader(GLT_SHADER_FLAT,
+//                                      mTransformPipeline.GetModelViewProjectionMatrix(),
+//                                      lColor);
+
      M3DMatrix44f mCamera;
      mCameraFrame.GetCameraMatrix(mCamera);
-     mModelViewMatrix.PushMatrix(mCamera);
+     //mModelViewMatrix.PushMatrix(mCamera);
+     modelViewMatrix.PushMatrix(mCamera);
+
+     modelViewMatrix.Translate(0.0f, 0.0f, -2.5f);
+     modelViewMatrix.Rotate(0, 0.0f, 1.0f, 0.0f);
      //mModelViewMatrix.PushMatrix();
-     /*mModelViewMatrix.Rotate(mRot[0],0,0,1);
-     mModelViewMatrix.Rotate(mRot[1],1,0,1);
-     */
+//   mModelViewMatrix.Rotate(mRot[0],0,0,1);
+//     mModelViewMatrix.Rotate(mRot[1],1,0,1);
+//
 
      glPointSize(2.0f);
      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
      mShaderManager.UseStockShader(GLT_SHADER_FLAT,
                                       mTransformPipeline.GetModelViewProjectionMatrix(),
                                       lColor);
-     sphereBatch.Draw();
+     //sphereBatch.Draw();
 
       // Draw the Cloud
       if(mCloud != NULL && (mThingsToDraw & DRAW_CLOUDS ) ) {
@@ -131,10 +170,10 @@ void Renderer::paintGL() {
          mListBlobs.drawBlobsThreshold( 1 );
      }
 
-     mModelViewMatrix.PopMatrix();
-     mModelViewMatrix.PopMatrix();
+     modelViewMatrix.PopMatrix();
+     modelViewMatrix.PopMatrix();
 
-/*   if( mThingsToDraw & DRAW_BLOBS_THR_DEEP ) {
+   if( mThingsToDraw & DRAW_BLOBS_THR_DEEP ) {
          mListBlobs.drawBlobsInfluence( 3 );
      }
      if( mThingsToDraw & DRAW_BLOBS_THR_IN ) {
@@ -161,11 +200,9 @@ void Renderer::paintGL() {
             mGLTriangles.Draw();
          glPopMatrix();
          glDisable(GL_COLOR_MATERIAL);
+     */
      }
      //qWarning()<<lTime.elapsed();
-     */
-
-
 }
 
 
@@ -176,7 +213,7 @@ void Renderer::initializeGL() {
         qWarning()<<"GLEW Error: "<<glewGetErrorString(err);
     }
 
-    glClearColor(0, 0, 0, 0);
+  /*  glClearColor(0, 0, 0, 0);
     this->resizeGL( parentWidget()->size() );
 
     mCameraFrame.MoveForward(-4.0);
@@ -186,51 +223,66 @@ void Renderer::initializeGL() {
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.2,0.2,0.2,1.0f);
 
-   /* glEnable(GL_LIGHTING);
-    glEnable(GL_NORMALIZE);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_COLOR_MATERIAL);
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 1);
+//   glEnable(GL_LIGHTING);
+//    glEnable(GL_NORMALIZE);
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_COLOR_MATERIAL);
+//    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 1);
 
-    glShadeModel(GL_SMOOTH);
+//    glShadeModel(GL_SMOOTH);
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, gLight0[0]);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, gLight0[1]);
-    glLightfv(GL_LIGHT0, GL_POSITION, gLight0[2]);
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0);
+//    glLightfv(GL_LIGHT0, GL_AMBIENT, gLight0[0]);
+//    glLightfv(GL_LIGHT0, GL_DIFFUSE, gLight0[1]);
+//    glLightfv(GL_LIGHT0, GL_POSITION, gLight0[2]);
 
-    glEnable(GL_LIGHT1);
-    glLightfv(GL_LIGHT1, GL_AMBIENT, gLight1[0]);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, gLight1[1]);
-    glLightfv(GL_LIGHT1, GL_POSITION, gLight1[2]);
+//    glEnable(GL_LIGHT1);
+//    glLightfv(GL_LIGHT1, GL_AMBIENT, gLight1[0]);
+//    glLightfv(GL_LIGHT1, GL_DIFFUSE, gLight1[1]);
+//    glLightfv(GL_LIGHT1, GL_POSITION, gLight1[2]);
 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT_AND_BACK);
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_FRONT_AND_BACK);
 
-    mCameraFrame.SetForwardVector(0,0,1);
-    mCameraFrame.SetUpVector(0,1,0);
-    mCameraFrame.SetOrigin(0,0,0);
-    */
+//    mCameraFrame.SetForwardVector(0,0,1);
+//    mCameraFrame.SetUpVector(0,1,0);
+//    mCameraFrame.SetOrigin(0,0,0);
+
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT_AND_BACK);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnableClientState(GLT_ATTRIBUTE_VERTEX);
-    glEnableClientState(GLT_ATTRIBUTE_NORMAL);
-    glEnableClientState(GLT_ATTRIBUTE_TEXTURE0);
 
-    gltMakeSphere(sphereBatch, 1.3f, 15, 15);
+    gltMakeSphere(sphereBatch, 1.3f, 15, 15);*/
+
+
+
+    // Initialze Shader Manager
+    mShaderManager.InitializeStockShaders();
+    gltMakeSphere(sphereBatch, 0.3f, 15, 15);
+
+    glEnable(GL_DEPTH_TEST);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void Renderer::resizeGL( int width, int height ){
     this->resize(width, height);
     glViewport(0, 0, width, height);
-    mViewFrustum.SetPerspective(35.0f, float(width)/float(height), 2.0f, 500.0f);
+    mViewFrustum.SetPerspective(35.0f, float(width)/float(height), 0.1f, 500.0f);
     mProjectionMatrix.LoadMatrix(mViewFrustum.GetProjectionMatrix());
 
-    mTransformPipeline.SetMatrixStacks(mModelViewMatrix,mProjectionMatrix);
+    //mTransformPipeline.SetMatrixStacks(mModelViewMatrix,mProjectionMatrix);
+
+    // Create the projection matrix, and load it on the projection matrix stack
+    projectionMatrix.LoadMatrix(mViewFrustum.GetProjectionMatrix());
+
+    // Set the transformation pipeline to use the two matrix stacks
+    mTransformPipeline.SetMatrixStacks(modelViewMatrix, projectionMatrix);
 }
 
 void Renderer::resizeGL( QSize pSize ){

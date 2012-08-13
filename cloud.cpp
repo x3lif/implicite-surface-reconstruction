@@ -94,7 +94,7 @@ CVoxel_8 Cloud::boundingBox() {
 		xmin = qMin(lTab[i].x(), xmin);
 		ymax = qMax(lTab[i].y(), ymax);
 		ymin = qMin(lTab[i].y(), ymin);
-		zmax = qMax(lTab[i].z(), zmax);
+        zmax = qMax(lTab[i].z(), zmax);
 		zmin = qMin(lTab[i].z(), zmin);
 	}
 

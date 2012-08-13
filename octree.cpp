@@ -359,7 +359,7 @@ void COctree_Node::Draw_Box(unsigned char type)
 	default:
 		break;
 	}		
-		Voxel.Draw();
+        Voxel.Draw();
 }
 
 void COctree_Node::Get_Leaves_Recursive(CList_Octree_Node &L_ON)

@@ -93,12 +93,16 @@ private:
         GLGeometryTransform mTransformPipeline;
 
         GLMatrixStack mModelViewMatrix;
+        GLMatrixStack modelViewMatrix;
         GLMatrixStack mProjectionMatrix;
+        GLMatrixStack projectionMatrix;
         GLFrustum mViewFrustum;
 
-        GLBatch				floorBatch;
         GLBatch             mCloudBatch;
         GLTriangleBatch     sphereBatch;
+
+        GLTriangleBatch		torusBatch;
+        GLBatch				floorBatch;
 };
 
 #endif /* RENDERER_H_ */
