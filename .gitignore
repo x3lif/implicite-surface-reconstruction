@@ -1,0 +1,8 @@
+
+*.o
+
+bin/
+
+Makefile
+
+PFE\.pro\.user
